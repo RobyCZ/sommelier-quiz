@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chi Vuol Essere Sommelier? — Design System & Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Cinzel:wght@400;600;700;900&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DESIGN TOKENS
+  ============================================================ */
+  :root {
+    --black:        #07080F;
+    --navy-deep:    #0D0E1F;
+    --navy-mid:     #131530;
+    --navy-light:   #1C1F45;
+    --gold-bright:  #FFD700;
+    --gold-main:    #D4AF37;
+    --gold-dark:    #9A7D1E;
+    --gold-dim:     #6B571A;
+    --wine:         #7B2D3E;
+    --wine-light:   #A33F54;
+    --wine-deep:    #4A1627;
+    --cream:        #F5ECD7;
+    --silver:       #C0C0C0;
+    --white:        #FFFFFF;
+    --text-dim:     rgba(255,255,255,0.55);
+
+    --shadow-gold:  0 0 30px rgba(212,175,55,0.45), 0 0 60px rgba(212,175,55,0.15);
+    --shadow-wine:  0 0 30px rgba(123,45,62,0.6);
+    --glow-answer:  0 0 20px rgba(212,175,55,0.5);
+
+    --radius-pill:  999px;
+    --radius-card:  16px;
+    --radius-hex:   12px;
+
+    --font-display: 'Cinzel', serif;
+    --font-body:    'Playfair Display', serif;
+    --font-ui:      'Raleway', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #080910;
+    color: var(--white);
+    font-family: var(--font-ui);
+    min-height: 100vh;
+  }
+
+  /* ============================================================
+     LAYOUT — SECTIONS
+  ============================================================ */
+  .section {
+    padding: 60px 40px;
+    border-bottom: 1px solid rgba(212,175,55,0.15);
+  }
+  .section-label {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-main);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--white);
+    margin-bottom: 40px;
+  }
+
+  /* ============================================================
+     HEADER
+  ============================================================ */
+  .doc-header {
+    background: var(--black);
+    border-bottom: 2px solid var(--gold-dim);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .doc-header-icon {
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold-main));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .doc-header h1 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--gold-main);
+    letter-spacing: 1px;
+  }
+  .doc-header p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .doc-nav {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .doc-nav a {
+    padding: 6px 14px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 20px;
+    font-size: 11px;
+    font-family: var(--font-ui);
+    letter-spacing: 1px;
+    color: var(--gold-main);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .doc-nav a:hover {
+    background: var(--gold-dim);
+    color: var(--white);
+  }
+
+  /* ============================================================
+     COLOUR PALETTE
+  ============================================================ */
+  .palette-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  .swatch-block {
+    width: 80px; height: 80px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .swatch span {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: monospace;
+    text-align: center;
+  }
+  .swatch strong {
+    font-size: 11px;
+    color: var(--white);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ============================================================
+     TYPOGRAPHY SHOWCASE
+  ============================================================ */
+  .type-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .type-sample {
+    padding: 24px 32px;
+    background: var(--navy-deep);
+    border-radius: 12px;
+    border-left: 3px solid var(--gold-dim);
+  }
+  .type-meta {
+    font-size: 10px;
+    font-family: monospace;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     PHONE MOCKUPS — shared frame
+  ============================================================ */
+  .mockups-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .mockup-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .mockup-label {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold-main);
+    text-transform: uppercase;
+  }
+
+  .phone {
+    width: 320px;
+    height: 640px;
+    border-radius: 44px;
+    background: var(--black);
+    border: 2px solid #2A2A3A;
+    box-shadow:
+      0 0 0 1px #111,
+      inset 0 0 0 2px #1A1A2E,
+      0 40px 80px rgba(0,0,0,0.7);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* notch */
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 28px;
+    background: #111;
+    border-radius: 0 0 20px 20px;
+    z-index: 99;
+  }
+
+  /* ============================================================
+     SCREEN 1 — SPLASH
+  ============================================================ */
+  .screen-splash {
+    flex: 1;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 60%, rgba(123,45,62,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 30%, rgba(212,175,55,0.12) 0%, transparent 60%),
+      linear-gradient(180deg, #07080F 0%, #0D0E20 40%, #100A14 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px 32px;
+    gap: 0;
+    position: relative;
+  }
+  .splash-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+  }
+
+  .splash-glass-icon {
+    font-size: 64px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 20px rgba(212,175,55,0.6));
+    animation: floatIcon 3s ease-in-out infinite;
+  }
+  @keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .splash-eyebrow {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold-main);
+    margin-bottom: 4px;
+    opacity: 0.8;
+  }
+  .splash-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    text-align: center;
+    line-height: 1.3;
+    color: var(--white);
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    margin-bottom: 2px;
+  }
+  .splash-title span {
+    color: var(--gold-main);
+    display: block;
+    font-size: 22px;
+  }
+  .splash-subtitle {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .splash-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-main), transparent);
+    margin: 0 auto 28px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    max-width: 240px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #B8960C 0%, #D4AF37 40%, #FFD700 60%, #D4AF37 80%, #9A7D1E 100%);
+    border: none;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #1A1000;
+    cursor: pointer;
+    box-shadow: var(--shadow-gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .btn-secondary {
+    width: 100%;
+    max-width: 240px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gold-main);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .splash-bottom {
+    position: absolute;
+    bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .splash-bottom span {
+    font-size: 9px;
+    color: rgba(255,255,255,0.3);
+    font-family: var(--font-ui);
+    letter-spacing: 1px;
+  }
+
+  /* ============================================================
+     SCREEN 2 — LEVEL SELECTION
+  ============================================================ */
+  .screen-levels {
+    flex: 1;
+    background: linear-gradient(180deg, #0A0B18 0%, #0E1020 100%);
+    display: flex;
+    flex-direction: column;
+    padding-top: 36px;
+  }
+  .screen-header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px 0;
+    margin-bottom: 16px;
+  }
+  .back-btn {
+    font-size: 18px;
+    color: var(--gold-main);
+    cursor: pointer;
+  }
+  .screen-top-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--gold-main);
+    letter-spacing: 2px;
+  }
+  .profile-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--wine), var(--wine-light));
+    border: 1px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .levels-headline {
+    font-family: var(--font-display);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .levels-subhead {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--cream);
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 0 16px;
+  }
+
+  .levels-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 16px;
+    flex: 1;
+  }
+  .level-card {
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 0.2s;
+  }
+  .level-card:hover { transform: translateX(3px); }
+
+  .level-card.free {
+    background: linear-gradient(135deg, #1A1F3A 0%, #232850 100%);
+    border-color: rgba(212,175,55,0.4);
+    box-shadow: var(--shadow-gold);
+  }
+  .level-card.locked {
+    background: linear-gradient(135deg, #111120 0%, #191925 100%);
+    border-color: rgba(255,255,255,0.06);
+    opacity: 0.75;
+  }
+
+  .level-badge {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .level-badge.free  { background: linear-gradient(135deg, #9A7D1E, #D4AF37); }
+  .level-badge.s2 { background: linear-gradient(135deg, #3A3A4A, #5A5A6A); }
+  .level-badge.s3 { background: linear-gradient(135deg, #4A1627, #7B2D3E); }
+
+  .level-info { flex: 1; }
+  .level-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .level-desc {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+  .level-tag {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .tag-free  { background: rgba(212,175,55,0.2); color: var(--gold-main); border: 1px solid var(--gold-dim); }
+  .tag-pro   { background: rgba(192,192,192,0.12); color: var(--silver); border: 1px solid rgba(192,192,192,0.25); }
+  .tag-elite { background: rgba(123,45,62,0.25); color: #E88098; border: 1px solid rgba(123,45,62,0.5); }
+
+  .lock-icon {
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.4;
+  }
+
+  .levels-footer {
+    padding: 14px 16px 20px;
+    text-align: center;
+  }
+  .levels-footer p {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: var(--font-ui);
+    line-height: 1.5;
+  }
+  .levels-footer strong {
+    color: var(--gold-main);
+    font-weight: 600;
+  }
+
+  /* ============================================================
+     SCREEN 3 — IN GAME
+  ============================================================ */
+  .screen-game {
+    flex: 1;
+    background:
+      radial-gradient(ellipse 100% 60% at 50% 100%, rgba(123,45,62,0.2) 0%, transparent 70%),
+      linear-gradient(180deg, #07080F 0%, #0D0E20 100%);
+    display: flex;
+    flex-direction: column;
+    padding-top: 36px;
+  }
+
+  .game-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 18px 0;
+    margin-bottom: 8px;
+  }
+  .game-level-pill {
+    padding: 4px 10px;
+    background: rgba(212,175,55,0.15);
+    border: 1px solid var(--gold-dim);
+    border-radius: 20px;
+    font-size: 9px;
+    font-family: var(--font-ui);
+    letter-spacing: 2px;
+    color: var(--gold-main);
+    text-transform: uppercase;
+  }
+  .game-score {
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--gold-main);
+  }
+  .game-timer {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold-bright);
+    background: rgba(212,175,55,0.08);
+    box-shadow: 0 0 12px rgba(212,175,55,0.3);
+    position: relative;
+  }
+
+  /* prize ladder mini */
+  .prize-mini {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 18px;
+    margin-bottom: 12px;
+  }
+  .prize-dot {
+    width: 18px; height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+  .prize-dot.active { background: var(--gold-main); box-shadow: 0 0 6px rgba(212,175,55,0.6); }
+  .prize-dot.passed { background: rgba(212,175,55,0.35); }
+
+  /* question area */
+  .question-area {
+    margin: 0 14px 14px;
+    padding: 18px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .question-number {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+  .question-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--white);
+  }
+
+  /* answers */
+  .answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 14px 12px;
+    flex: 1;
+  }
+  .answer-btn {
+    padding: 10px 8px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(20,22,45,0.9) 0%, rgba(28,30,55,0.9) 100%);
+    border: 1px solid rgba(212,175,55,0.25);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .answer-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,175,55,0.06), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .answer-btn:hover::before { opacity: 1; }
+  .answer-btn:hover { border-color: rgba(212,175,55,0.6); box-shadow: var(--glow-answer); }
+
+  .answer-btn.correct {
+    background: linear-gradient(135deg, rgba(40,100,40,0.5) 0%, rgba(20,80,30,0.7) 100%);
+    border-color: #4CAF50;
+    box-shadow: 0 0 20px rgba(76,175,80,0.4);
+  }
+  .answer-btn.wrong {
+    background: linear-gradient(135deg, rgba(120,20,20,0.5) 0%, rgba(90,10,10,0.7) 100%);
+    border-color: #E53935;
+    box-shadow: 0 0 20px rgba(229,57,53,0.4);
+  }
+
+  .answer-letter {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(212,175,55,0.15);
+    border: 1px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold-main);
+    flex-shrink: 0;
+  }
+  .answer-text {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    line-height: 1.35;
+    color: var(--white);
+    text-align: left;
+  }
+
+  /* lifelines */
+  .lifelines {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 8px 14px 14px;
+  }
+  .lifeline-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+  .lifeline-btn.used { opacity: 0.3; }
+  .lifeline-circle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1A1F3A, #232850);
+    border: 1.5px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(212,175,55,0.2);
+  }
+  .lifeline-label {
+    font-family: var(--font-ui);
+    font-size: 7px;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.5px;
+    max-width: 48px;
+    line-height: 1.3;
+  }
+
+  /* ============================================================
+     SCREEN 4 — PRIZE LADDER (full)
+  ============================================================ */
+  .screen-ladder {
+    flex: 1;
+    background: linear-gradient(180deg, #08090F 0%, #0C0D1C 100%);
+    display: flex;
+    flex-direction: column;
+    padding-top: 36px;
+    overflow-y: auto;
+  }
+  .ladder-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-align: center;
+    color: var(--gold-main);
+    padding: 10px 0 14px;
+  }
+  .ladder-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 20px 20px;
+  }
+  .ladder-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .ladder-row.milestone {
+    background: rgba(212,175,55,0.08);
+    border-color: rgba(212,175,55,0.3);
+  }
+  .ladder-row.current {
+    background: rgba(212,175,55,0.18);
+    border-color: var(--gold-main);
+    box-shadow: var(--shadow-gold);
+  }
+  .ladder-row.passed-row {
+    background: rgba(255,255,255,0.02);
+  }
+  .ladder-q-num {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    color: var(--text-dim);
+    width: 24px;
+  }
+  .ladder-q-name {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    color: var(--white);
+    flex: 1;
+    padding: 0 8px;
+  }
+  .ladder-row.current .ladder-q-name {
+    color: var(--gold-bright);
+    font-weight: 600;
+  }
+  .ladder-prize {
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--gold-main);
+  }
+  .ladder-row.milestone .ladder-prize {
+    color: var(--gold-bright);
+    font-weight: 700;
+  }
+  .ladder-check { font-size: 12px; }
+
+  /* ============================================================
+     SCREEN 5 — PAYWALL / UPGRADE
+  ============================================================ */
+  .screen-paywall {
+    flex: 1;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 80%, rgba(123,45,62,0.3) 0%, transparent 65%),
+      linear-gradient(180deg, #07080F 0%, #0E0C18 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 52px;
+    padding-left: 20px;
+    padding-right: 20px;
+    gap: 0;
+  }
+  .paywall-icon { font-size: 48px; margin-bottom: 12px; }
+  .paywall-eyebrow {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-main);
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+  .paywall-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    text-align: center;
+    color: var(--white);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .paywall-desc {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .plan-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .plan-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(212,175,55,0.2);
+    background: rgba(255,255,255,0.03);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+  }
+  .plan-card.featured {
+    background: rgba(212,175,55,0.08);
+    border-color: var(--gold-main);
+    box-shadow: var(--shadow-gold);
+  }
+  .plan-card-badge {
+    position: absolute;
+    top: -8px; right: 12px;
+    padding: 2px 8px;
+    background: var(--gold-main);
+    border-radius: 10px;
+    font-size: 8px;
+    font-family: var(--font-ui);
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #1A1000;
+    text-transform: uppercase;
+  }
+  .plan-icon { font-size: 22px; }
+  .plan-info { flex: 1; }
+  .plan-name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--white);
+  }
+  .plan-features {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .plan-price {
+    text-align: right;
+  }
+  .plan-price-main {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--gold-main);
+    display: block;
+  }
+  .plan-price-sub {
+    font-family: var(--font-ui);
+    font-size: 8px;
+    color: var(--text-dim);
+  }
+  .paywall-cta {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, #B8960C, #D4AF37, #FFD700, #D4AF37, #9A7D1E);
+    border: none;
+    border-radius: 30px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #1A1000;
+    cursor: pointer;
+    box-shadow: var(--shadow-gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .paywall-restore {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    color: var(--text-dim);
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* ============================================================
+     COMPONENTS — Component showcase
+  ============================================================ */
+  .components-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .comp-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .comp-group h4 {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 4px;
+  }
+
+  /* standalone answer row demo */
+  .answer-demo {
+    width: 300px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(20,22,45,0.9), rgba(28,30,55,0.9));
+    border: 1px solid rgba(212,175,55,0.25);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .answer-demo.correct {
+    background: linear-gradient(135deg, rgba(30,80,30,0.6), rgba(15,60,20,0.8));
+    border-color: #4CAF50;
+    box-shadow: 0 0 20px rgba(76,175,80,0.35);
+  }
+  .answer-demo.wrong {
+    background: linear-gradient(135deg, rgba(100,15,15,0.6), rgba(80,8,8,0.8));
+    border-color: #E53935;
+    box-shadow: 0 0 20px rgba(229,57,53,0.35);
+  }
+  .answer-demo.highlight {
+    border-color: var(--gold-bright);
+    box-shadow: var(--glow-answer);
+    background: linear-gradient(135deg, rgba(30,30,60,0.9), rgba(40,42,80,0.9));
+  }
+  .answer-demo-letter {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(212,175,55,0.15);
+    border: 1.5px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--gold-main);
+    flex-shrink: 0;
+  }
+  .answer-demo-text {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--white);
+  }
+
+  /* icon buttons row */
+  .icon-btn-row {
+    display: flex;
+    gap: 16px;
+  }
+  .icon-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .icon-btn-circle {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1A1F3A, #232850);
+    border: 1.5px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 14px rgba(212,175,55,0.2);
+  }
+  .icon-btn span {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    color: var(--text-dim);
+    text-align: center;
+    max-width: 56px;
+    line-height: 1.3;
+  }
+
+  /* tags */
+  .tags-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     BRAND GUIDELINES SECTION
+  ============================================================ */
+  .guidelines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .guideline-card {
+    padding: 20px;
+    background: var(--navy-deep);
+    border: 1px solid rgba(212,175,55,0.12);
+    border-radius: 12px;
+  }
+  .guideline-card h4 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--gold-main);
+    margin-bottom: 10px;
+  }
+  .guideline-card p {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .guideline-card ul {
+    padding-left: 14px;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+  .guideline-card ul li { margin-bottom: 2px; }
+  .guideline-card strong { color: var(--gold-main); }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  .doc-footer {
+    padding: 40px 48px;
+    text-align: center;
+    background: var(--black);
+    border-top: 1px solid rgba(212,175,55,0.15);
+  }
+  .doc-footer p {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .doc-footer .footer-logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--gold-main);
+    margin-bottom: 8px;
+  }
+
+  /* ============================================================
+     UTIL
+  ============================================================ */
+  .gold { color: var(--gold-main); }
+  .dimtext { color: var(--text-dim); }
+  .mt8 { margin-top: 8px; }
+  .mt16 { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="doc-header">
+  <div class="doc-header-icon">🍷</div>
+  <div>
+    <h1>Chi Vuol Essere Sommelier?</h1>
+    <p>Design System & Interactive Mockup — v1.0 · Maggio 2026</p>
+  </div>
+  <nav class="doc-nav">
+    <a href="#palette">Palette</a>
+    <a href="#typography">Tipografia</a>
+    <a href="#screens">Schermate</a>
+    <a href="#components">Componenti</a>
+    <a href="#guidelines">Linee Guida</a>
+  </nav>
+</header>
+
+<!-- ═══════════════ 1. PALETTE ═══════════════ -->
+<section class="section" id="palette">
+  <p class="section-label">Design Tokens</p>
+  <h2 class="section-title">Palette Cromatica</h2>
+  <div class="palette-grid">
+    <div class="swatch">
+      <div class="swatch-block" style="background:#07080F"></div>
+      <strong>Notte</strong><span>#07080F</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#0D0E1F"></div>
+      <strong>Cielo Profondo</strong><span>#0D0E1F</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#131530"></div>
+      <strong>Blu Notte</strong><span>#131530</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#D4AF37; border-color:#D4AF37"></div>
+      <strong>Oro Principale</strong><span>#D4AF37</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#FFD700; border-color:#FFD700"></div>
+      <strong>Oro Brillante</strong><span>#FFD700</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#9A7D1E"></div>
+      <strong>Oro Antico</strong><span>#9A7D1E</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#7B2D3E"></div>
+      <strong>Bordeaux</strong><span>#7B2D3E</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#A33F54"></div>
+      <strong>Rosso Vino</strong><span>#A33F54</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#4A1627"></div>
+      <strong>Granato</strong><span>#4A1627</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#F5ECD7; border-color:#D4AF37"></div>
+      <strong>Pergamena</strong><span>#F5ECD7</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#C0C0C0"></div>
+      <strong>Argento</strong><span>#C0C0C0</span>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:rgba(255,255,255,0.55)"></div>
+      <strong>Testo Dim</strong><span>rgba(fff,55%)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 2. TYPOGRAPHY ═══════════════ -->
+<section class="section" id="typography">
+  <p class="section-label">Identità Visiva</p>
+  <h2 class="section-title">Sistema Tipografico</h2>
+  <div class="type-grid">
+    <div class="type-sample">
+      <p class="type-meta">Cinzel · Display / Titoli principali / Logo</p>
+      <p style="font-family:'Cinzel',serif;font-size:36px;color:var(--gold-main);letter-spacing:2px;">Chi Vuol Essere Sommelier?</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-meta">Cinzel · 700 · Sezioni e premi</p>
+      <p style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;color:var(--white);">Scegli il tuo livello di degustazione</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-meta">Playfair Display · Domande del gioco</p>
+      <p style="font-family:'Playfair Display',serif;font-size:16px;color:var(--white);line-height:1.5;">Quale vitigno autoctono pugliese è alla base del Primitivo di Manduria DOC?</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-meta">Playfair Display Italic · Descrizioni e sottotitoli</p>
+      <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--text-dim);">Il sapere enologico è il passaporto per un'esperienza sensoriale unica.</p>
+    </div>
+    <div class="type-sample">
+      <p class="type-meta">Raleway · UI / Bottoni / Label / Risposte</p>
+      <p style="font-family:'Raleway',sans-serif;font-size:14px;color:var(--white);letter-spacing:1px;">A: Negramaro&nbsp;&nbsp;B: Primitivo&nbsp;&nbsp;C: Nero di Troia&nbsp;&nbsp;D: Uva di Troia</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 3. SCREENS ═══════════════ -->
+<section class="section" id="screens">
+  <p class="section-label">UI / UX</p>
+  <h2 class="section-title">Schermate dell'Applicazione</h2>
+
+  <div class="mockups-row">
+
+    <!-- ── SPLASH ── -->
+    <div class="mockup-wrapper">
+      <span class="mockup-label">01 · Splash Screen</span>
+      <div class="phone">
+        <div class="screen-splash">
+          <!-- stars -->
+          <div class="splash-stars">
+            <div class="star" style="top:10%;left:15%;opacity:0.7"></div>
+            <div class="star" style="top:20%;left:80%;opacity:0.5"></div>
+            <div class="star" style="top:35%;left:5%;opacity:0.8"></div>
+            <div class="star" style="top:15%;left:55%;opacity:0.4"></div>
+            <div class="star" style="top:50%;left:90%;opacity:0.6"></div>
+            <div class="star" style="top:60%;left:25%;opacity:0.3"></div>
+            <div class="star" style="top:70%;left:70%;opacity:0.5"></div>
+            <div class="star" style="top:8%;left:40%;opacity:0.6;width:3px;height:3px"></div>
+          </div>
+          <div class="splash-glass-icon">🍷</div>
+          <p class="splash-eyebrow">Il Quiz</p>
+          <h1 class="splash-title">Chi Vuol Essere<span>Sommelier?</span></h1>
+          <p class="splash-subtitle">Metti alla prova la tua cultura del vino</p>
+          <div class="splash-divider"></div>
+          <button class="btn-primary">Inizia a Giocare</button>
+          <button class="btn-secondary">Accedi / Registrati</button>
+          <div class="splash-bottom">
+            <span>🏆</span>
+            <span>Classifiche · Premi · Livelli</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LEVEL SELECTION ── -->
+    <div class="mockup-wrapper">
+      <span class="mockup-label">02 · Scelta Livello</span>
+      <div class="phone">
+        <div class="screen-levels">
+          <div class="screen-header-bar">
+            <span class="back-btn">←</span>
+            <span class="screen-top-title">LIVELLI</span>
+            <div class="profile-avatar">👤</div>
+          </div>
+          <p class="levels-headline">Quanto conosci il vino?</p>
+          <p class="levels-subhead">Scegli la tua sfida e conquista il titolo di Sommelier</p>
+          <div class="levels-list">
+            <!-- LIVELLO 1 -->
+            <div class="level-card free">
+              <div class="level-badge free">🍇</div>
+              <div class="level-info">
+                <p class="level-name">Appassionato</p>
+                <p class="level-desc">Vitigni, regioni, abbinamenti base. Il punto di partenza ideale.</p>
+                <p class="level-desc" style="margin-top:4px;color:var(--gold-dim);">15 domande · 30 sec/risposta</p>
+              </div>
+              <span class="level-tag tag-free">Gratis</span>
+            </div>
+            <!-- LIVELLO 2 -->
+            <div class="level-card locked">
+              <div class="level-badge s2">🥂</div>
+              <div class="level-info">
+                <p class="level-name">Esperto</p>
+                <p class="level-desc">DOC, DOCG, tecniche di vinificazione e degustazione professionale.</p>
+                <p class="level-desc" style="margin-top:4px;color:rgba(192,192,192,0.4);">20 domande · 25 sec/risposta</p>
+              </div>
+              <span class="level-tag tag-pro">Premium</span>
+              <span class="lock-icon">🔒</span>
+            </div>
+            <!-- LIVELLO 3 -->
+            <div class="level-card locked">
+              <div class="level-badge s3">🏅</div>
+              <div class="level-info">
+                <p class="level-name">Sommelier</p>
+                <p class="level-desc">Enografia mondiale, annate, verticali, curiosità da Master Sommelier.</p>
+                <p class="level-desc" style="margin-top:4px;color:rgba(232,128,152,0.4);">25 domande · 20 sec/risposta</p>
+              </div>
+              <span class="level-tag tag-elite">Elite</span>
+              <span class="lock-icon">🔒</span>
+            </div>
+          </div>
+          <div class="levels-footer">
+            <p>Sblocca <strong>Esperto</strong> a <strong>€4,99</strong> · <strong>Sommelier</strong> a <strong>€7,99</strong><br>oppure <strong>Bundle</strong> entrambi a <strong>€9,99</strong> · Paghi una volta sola</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── IN GAME ── -->
+    <div class="mockup-wrapper">
+      <span class="mockup-label">03 · Partita in Corso</span>
+      <div class="phone">
+        <div class="screen-game">
+          <div class="game-topbar">
+            <span class="game-level-pill">🍇 Appassionato</span>
+            <span class="game-score">€ 3.000</span>
+            <div class="game-timer">28</div>
+          </div>
+
+          <!-- prize progress dots -->
+          <div class="prize-mini">
+            <div class="prize-dot passed"></div>
+            <div class="prize-dot passed"></div>
+            <div class="prize-dot passed"></div>
+            <div class="prize-dot active"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+            <div class="prize-dot"></div>
+          </div>
+
+          <!-- question -->
+          <div class="question-area">
+            <p class="question-number">Domanda 4 di 15</p>
+            <p class="question-text">In quale regione italiana si produce il Barolo, spesso chiamato "il Re dei vini italiani"?</p>
+          </div>
+
+          <!-- answers -->
+          <div class="answers-grid">
+            <div class="answer-btn">
+              <div class="answer-letter">A</div>
+              <div class="answer-text">Toscana</div>
+            </div>
+            <div class="answer-btn highlight">
+              <div class="answer-letter" style="border-color:var(--gold-bright);background:rgba(212,175,55,0.25);color:var(--gold-bright);">B</div>
+              <div class="answer-text">Piemonte</div>
+            </div>
+            <div class="answer-btn">
+              <div class="answer-letter">C</div>
+              <div class="answer-text">Veneto</div>
+            </div>
+            <div class="answer-btn">
+              <div class="answer-letter">D</div>
+              <div class="answer-text">Sicilia</div>
+            </div>
+          </div>
+
+          <!-- lifelines -->
+          <div class="lifelines">
+            <div class="lifeline-btn">
+              <div class="lifeline-circle">50</div>
+              <span class="lifeline-label">50:50</span>
+            </div>
+            <div class="lifeline-btn">
+              <div class="lifeline-circle">📞</div>
+              <span class="lifeline-label">Chiedi al Produttore</span>
+            </div>
+            <div class="lifeline-btn used">
+              <div class="lifeline-circle">👥</div>
+              <span class="lifeline-label">Chiedi alla Cantina</span>
+            </div>
+            <div class="lifeline-btn">
+              <div class="lifeline-circle">🔄</div>
+              <span class="lifeline-label">Cambia Domanda</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PRIZE LADDER ── -->
+    <div class="mockup-wrapper">
+      <span class="mockup-label">04 · Scala dei Premi</span>
+      <div class="phone">
+        <div class="screen-ladder">
+          <div class="screen-header-bar" style="padding-top:4px;">
+            <span class="back-btn">←</span>
+            <span class="screen-top-title">SCALA DEI PREMI</span>
+            <span style="width:24px"></span>
+          </div>
+          <p class="ladder-title">🍷 Appassionato</p>
+          <div class="ladder-list">
+            <div class="ladder-row"><span class="ladder-q-num">15</span><span class="ladder-q-name">Gran Finale</span><span class="ladder-prize">€ 100.000</span></div>
+            <div class="ladder-row milestone">
+              <span class="ladder-q-num">14</span><span class="ladder-q-name">🛡 Traguardo Sicuro</span><span class="ladder-prize">€ 50.000</span>
+            </div>
+            <div class="ladder-row"><span class="ladder-q-num">13</span><span class="ladder-q-name"></span><span class="ladder-prize">€ 30.000</span></div>
+            <div class="ladder-row"><span class="ladder-q-num">12</span><span class="ladder-q-name"></span><span class="ladder-prize">€ 20.000</span></div>
+            <div class="ladder-row"><span class="ladder-q-num">11</span><span class="ladder-q-name"></span><span class="ladder-prize">€ 15.000</span></div>
+            <div class="ladder-row"><span class="ladder-q-num">10</span><span class="ladder-q-name"></span><span class="ladder-prize">€ 10.000</span></div>
+            <div class="ladder-row milestone">
+              <span class="ladder-q-num">9</span><span class="ladder-q-name">🛡 Traguardo Sicuro</span><span class="ladder-prize">€ 5.000</span>
+            </div>
+            <div class="ladder-row"><span class="ladder-q-num">8</span><span class="ladder-q-name"></span><span class="ladder-prize">€ 3.000</span></div>
+            <div class="ladder-row current">
+              <span class="ladder-q-num">▶</span><span class="ladder-q-name" style="color:var(--gold-bright);font-weight:600;">Sei qui!</span><span class="ladder-prize" style="color:var(--gold-bright);">€ 2.000</span>
+            </div>
+            <div class="ladder-row passed-row"><span class="ladder-q-num">6</span><span class="ladder-q-name"></span><span class="ladder-prize" style="color:rgba(212,175,55,0.4)">€ 1.500</span><span class="ladder-check">✓</span></div>
+            <div class="ladder-row passed-row"><span class="ladder-q-num">5</span><span class="ladder-q-name"></span><span class="ladder-prize" style="color:rgba(212,175,55,0.4)">€ 1.000</span><span class="ladder-check">✓</span></div>
+            <div class="ladder-row passed-row"><span class="ladder-q-num">4</span><span class="ladder-q-name"></span><span class="ladder-prize" style="color:rgba(212,175,55,0.4)">€ 500</span><span class="ladder-check">✓</span></div>
+            <div class="ladder-row passed-row"><span class="ladder-q-num">3</span><span class="ladder-q-name"></span><span class="ladder-prize" style="color:rgba(212,175,55,0.4)">€ 300</span><span class="ladder-check">✓</span></div>
+            <div class="ladder-row milestone passed-row"><span class="ladder-q-num">2</span><span class="ladder-q-name">🛡 Primo Sicuro</span><span class="ladder-prize" style="color:rgba(212,175,55,0.4)">€ 200</span><span class="ladder-check">✓</span></div>
+            <div class="ladder-row passed-row"><span class="ladder-q-num">1</span><span class="ladder-q-name"></span><span class="ladder-prize" style="color:rgba(212,175,55,0.4)">€ 100</span><span class="ladder-check">✓</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAYWALL ── -->
+    <div class="mockup-wrapper">
+      <span class="mockup-label">06 · Sblocca Livello</span>
+      <div class="phone">
+        <div class="screen-paywall">
+          <div class="paywall-icon">🔓</div>
+          <p class="paywall-eyebrow">Acquisto una tantum</p>
+          <h2 class="paywall-title">Scegli il tuo<br>prossimo livello</h2>
+          <p class="paywall-desc">Paghi una volta sola. Il livello è tuo per sempre, senza rinnovi o sorprese.</p>
+          <div class="plan-cards">
+
+            <!-- LIVELLO ESPERTO -->
+            <div class="plan-card">
+              <span class="plan-icon">🥂</span>
+              <div class="plan-info">
+                <p class="plan-name">Livello Esperto</p>
+                <p class="plan-features">200+ domande · DOC/DOCG approfondite<br>Tecniche di vinificazione · Classifiche</p>
+              </div>
+              <div class="plan-price">
+                <span class="plan-price-main">€4,99</span>
+                <span class="plan-price-sub">una volta</span>
+              </div>
+            </div>
+
+            <!-- LIVELLO SOMMELIER -->
+            <div class="plan-card featured">
+              <div class="plan-card-badge">Completo</div>
+              <span class="plan-icon">🏅</span>
+              <div class="plan-info">
+                <p class="plan-name">Livello Sommelier</p>
+                <p class="plan-features">300+ domande · Enografia mondiale<br>Master Sommelier · Annate storiche</p>
+              </div>
+              <div class="plan-price">
+                <span class="plan-price-main">€7,99</span>
+                <span class="plan-price-sub">una volta</span>
+              </div>
+            </div>
+
+            <!-- BUNDLE -->
+            <div class="plan-card" style="background:rgba(212,175,55,0.06);border-color:rgba(212,175,55,0.35);">
+              <span class="plan-icon">🍷</span>
+              <div class="plan-info">
+                <p class="plan-name">Bundle Esperto + Sommelier</p>
+                <p class="plan-features">Tutti e due i livelli insieme<br><span style="color:var(--gold-main);">Risparmi €2,99 rispetto ai singoli</span></p>
+              </div>
+              <div class="plan-price">
+                <span class="plan-price-main">€9,99</span>
+                <span class="plan-price-sub">una volta</span>
+              </div>
+            </div>
+
+          </div>
+          <button class="paywall-cta">Acquista Ora</button>
+          <p class="paywall-restore">Ripristina acquisti precedenti</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PREMIO RAGGIUNTO ── -->
+    <div class="mockup-wrapper">
+      <span class="mockup-label">05 · Premio Raggiunto</span>
+      <div class="phone">
+        <div style="
+          flex:1;display:flex;flex-direction:column;
+          background:
+            radial-gradient(ellipse 90% 45% at 50% 0%,rgba(212,175,55,.2) 0%,transparent 55%),
+            radial-gradient(ellipse 70% 35% at 50% 100%,rgba(123,45,62,.18) 0%,transparent 60%),
+            linear-gradient(180deg,#07080F,#0D0E20);
+        ">
+          <!-- Header celebrazione -->
+          <div style="display:flex;flex-direction:column;align-items:center;padding:44px 24px 12px;flex-shrink:0">
+            <div style="width:58px;height:58px;border-radius:50%;background:rgba(76,175,80,.15);border:2px solid #4CAF50;display:flex;align-items:center;justify-content:center;font-size:26px;color:#4CAF50;box-shadow:0 0 28px rgba(76,175,80,.5),0 0 56px rgba(76,175,80,.15);margin-bottom:10px">✓</div>
+            <p style="font-family:var(--font-ui);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#4CAF50;margin-bottom:6px">Risposta Corretta!</p>
+            <p style="font-family:var(--font-display);font-size:28px;color:var(--gold-bright);text-shadow:0 0 40px rgba(212,175,55,.9);margin-bottom:6px">€ 5.000</p>
+            <div style="font-family:var(--font-ui);font-size:10px;color:var(--gold-main);font-weight:700;letter-spacing:1px;padding:4px 14px;border:1px solid rgba(212,175,55,.45);border-radius:20px;background:rgba(212,175,55,.1);box-shadow:0 0 10px rgba(212,175,55,.2)">🛡 Traguardo Sicuro Raggiunto!</div>
+          </div>
+
+          <!-- Scala premi -->
+          <div style="flex:1;overflow:hidden;padding:4px 14px;display:flex;flex-direction:column;gap:2px">
+            <!-- righe future (opache) -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.25);width:20px">15</span>
+              <span style="flex:1;font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.25);padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.3)">€ 100.000</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.15)">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(212,175,55,.4);width:20px">14</span>
+              <span style="flex:1;font-family:var(--font-ui);font-size:9px;color:rgba(212,175,55,.4);padding:0 6px">🛡 Sicuro</span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.4)">€ 50.000</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.2);width:20px">13</span>
+              <span style="flex:1;padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.25)">€ 30.000</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.2);width:20px">12</span><span style="flex:1;padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.25)">€ 20.000</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.2);width:20px">11</span><span style="flex:1;padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.25)">€ 15.000</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.2);width:20px">10</span><span style="flex:1;padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.25)">€ 10.000</span>
+            </div>
+
+            <!-- RIGA CORRENTE — glowing gold -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:9px;background:rgba(212,175,55,.18);border:1.5px solid var(--gold-main);box-shadow:0 0 22px rgba(212,175,55,.45),inset 0 0 18px rgba(212,175,55,.06);transform:scale(1.03);margin:1px 0">
+              <span style="font-family:var(--font-display);font-size:11px;color:var(--gold-bright);font-weight:700;width:20px">★</span>
+              <span style="flex:1;font-family:var(--font-ui);font-size:10px;color:var(--gold-main);font-weight:700;padding:0 6px">🛡 Sicuro</span>
+              <span style="font-family:var(--font-display);font-size:16px;color:var(--gold-bright);font-weight:700">€ 5.000</span>
+            </div>
+
+            <!-- righe già fatte (con check, molto opache) -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;opacity:.32">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.5);width:20px">8</span><span style="flex:1;padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.5)">€ 3.000</span>
+              <span style="font-size:10px;margin-left:4px;color:rgba(76,175,80,.7)">✓</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;opacity:.3">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.5);width:20px">7</span><span style="flex:1;padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.5)">€ 2.000</span>
+              <span style="font-size:10px;margin-left:4px;color:rgba(76,175,80,.7)">✓</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;border-radius:7px;opacity:.28">
+              <span style="font-family:var(--font-ui);font-size:9px;color:rgba(255,255,255,.5);width:20px">6</span><span style="flex:1;padding:0 6px"></span>
+              <span style="font-family:var(--font-display);font-size:10px;color:rgba(212,175,55,.5)">€ 1.500</span>
+              <span style="font-size:10px;margin-left:4px;color:rgba(76,175,80,.7)">✓</span>
+            </div>
+          </div>
+
+          <!-- Footer: progress bar + bottone -->
+          <div style="padding:10px 18px 20px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:10px">
+            <!-- barra di auto-avanzamento -->
+            <div style="width:100%;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden">
+              <div style="height:100%;width:65%;background:linear-gradient(90deg,var(--gold-dark),var(--gold-bright));border-radius:2px"></div>
+            </div>
+            <button style="width:100%;max-width:260px;padding:12px 24px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.4);border-radius:999px;font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:2px;color:var(--gold-main);cursor:pointer;text-transform:uppercase">
+              Prossima domanda &nbsp;→
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SHOP DOMANDE ── -->
+    <div class="mockup-wrapper">
+      <span class="mockup-label">07 · Shop Pacchetti Domande</span>
+      <div class="phone">
+        <div class="screen-levels" style="background:linear-gradient(180deg,#090A15 0%,#0E1020 100%);">
+          <div class="screen-header-bar">
+            <span class="back-btn">←</span>
+            <span class="screen-top-title">AGGIORNAMENTI</span>
+            <span style="font-size:18px;">🛒</span>
+          </div>
+          <p class="levels-headline">Nuove domande disponibili</p>
+          <p class="levels-subhead" style="font-size:11px;">Espandi il tuo arsenale con pacchetti tematici curati dagli esperti</p>
+
+          <div class="levels-list" style="gap:8px;">
+
+            <!-- pack 1 -->
+            <div class="level-card free" style="border-color:rgba(212,175,55,0.5);">
+              <div class="level-badge free" style="font-size:18px;">🇮🇹</div>
+              <div class="level-info">
+                <p class="level-name" style="font-size:13px;">Enografia Italiana</p>
+                <p class="level-desc">50 nuove domande su DOC/DOCG regionali, vitigni autoctoni e curiosità</p>
+                <p class="level-desc" style="margin-top:3px;color:var(--gold-dim);">📦 50 domande · Tutti i livelli</p>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <span style="font-family:var(--font-display);font-size:14px;color:var(--gold-main);display:block;">€1,99</span>
+                <span style="font-size:8px;color:var(--text-dim);">una volta</span>
+              </div>
+            </div>
+
+            <!-- pack 2 -->
+            <div class="level-card free" style="border-color:rgba(163,63,84,0.5);background:linear-gradient(135deg,#1A1020,#231528);">
+              <div class="level-badge s3" style="font-size:18px;">🇫🇷</div>
+              <div class="level-info">
+                <p class="level-name" style="font-size:13px;">Enografia Francese</p>
+                <p class="level-desc">Borgogna, Bordeaux, Champagne, Alsazia, Rodano — 50 domande avanzate</p>
+                <p class="level-desc" style="margin-top:3px;color:rgba(232,128,152,0.5);">📦 50 domande · Livello Sommelier</p>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <span style="font-family:var(--font-display);font-size:14px;color:#E88098;display:block;">€1,99</span>
+                <span style="font-size:8px;color:var(--text-dim);">una volta</span>
+              </div>
+            </div>
+
+            <!-- pack 3 -->
+            <div class="level-card locked" style="border-color:rgba(192,192,192,0.15);opacity:1;">
+              <div class="level-badge s2" style="font-size:18px;">🥂</div>
+              <div class="level-info">
+                <p class="level-name" style="font-size:13px;">Spumanti & Bollicine</p>
+                <p class="level-desc">Metodo Classico, Charmat, Franciacorta, Champagne, Cava, Prosecco</p>
+                <p class="level-desc" style="margin-top:3px;color:rgba(192,192,192,0.35);">📦 40 domande · Esperto + Sommelier</p>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <span style="font-family:var(--font-display);font-size:14px;color:var(--silver);display:block;">€1,99</span>
+                <span style="font-size:8px;color:var(--text-dim);">una volta</span>
+              </div>
+            </div>
+
+            <!-- pack 4 — coming soon -->
+            <div class="level-card locked" style="opacity:0.45;">
+              <div class="level-badge s2" style="font-size:18px;">🌍</div>
+              <div class="level-info">
+                <p class="level-name" style="font-size:13px;">Nuovo Mondo del Vino</p>
+                <p class="level-desc">USA, Argentina, Cile, Australia, Nuova Zelanda, Sud Africa</p>
+                <p class="level-desc" style="margin-top:3px;color:var(--text-dim);">📅 In arrivo · Iscriviti per essere notificato</p>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <span style="font-family:var(--font-display);font-size:12px;color:var(--text-dim);display:block;">Presto</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="levels-footer" style="padding-bottom:14px;">
+            <p style="font-size:9px;">I pacchetti si aggiungono al tuo livello acquistato.<br>Nuovi pack disponibili ogni trimestre.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end mockups-row -->
+</section>
+
+<!-- ═══════════════ 4. COMPONENTS ═══════════════ -->
+<section class="section" id="components">
+  <p class="section-label">UI Library</p>
+  <h2 class="section-title">Componenti Principali</h2>
+  <div class="components-row">
+
+    <div class="comp-group">
+      <h4>Risposte — Stati</h4>
+      <div class="answer-demo">
+        <div class="answer-demo-letter">A</div>
+        <span class="answer-demo-text">Risposta predefinita</span>
+      </div>
+      <div class="answer-demo highlight">
+        <div class="answer-demo-letter" style="border-color:var(--gold-bright);color:var(--gold-bright)">B</div>
+        <span class="answer-demo-text">Risposta selezionata</span>
+      </div>
+      <div class="answer-demo correct">
+        <div class="answer-demo-letter" style="background:rgba(76,175,80,0.2);border-color:#4CAF50;color:#4CAF50">C</div>
+        <span class="answer-demo-text">✓ Risposta corretta</span>
+      </div>
+      <div class="answer-demo wrong">
+        <div class="answer-demo-letter" style="background:rgba(229,57,53,0.2);border-color:#E53935;color:#E53935">D</div>
+        <span class="answer-demo-text">✗ Risposta sbagliata</span>
+      </div>
+    </div>
+
+    <div class="comp-group">
+      <h4>Aiuti di Gioco</h4>
+      <div class="icon-btn-row">
+        <div class="icon-btn">
+          <div class="icon-btn-circle" style="font-family:var(--font-display);font-size:14px;color:var(--gold-main)">50</div>
+          <span>50:50</span>
+        </div>
+        <div class="icon-btn">
+          <div class="icon-btn-circle">📞</div>
+          <span>Chiedi al Produttore</span>
+        </div>
+        <div class="icon-btn">
+          <div class="icon-btn-circle">👥</div>
+          <span>Chiedi alla Cantina</span>
+        </div>
+        <div class="icon-btn">
+          <div class="icon-btn-circle">🔄</div>
+          <span>Cambia Domanda</span>
+        </div>
+      </div>
+      <div class="mt16">
+        <h4 class="mt8">Tag Livelli</h4>
+        <div class="tags-row mt8">
+          <span class="tag tag-free">Gratis</span>
+          <span class="tag tag-pro">Premium</span>
+          <span class="tag tag-elite">Elite</span>
+        </div>
+      </div>
+      <div class="mt16">
+        <h4>Bottoni Principali</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;max-width:240px;margin-top:8px;">
+          <button class="btn-primary" style="max-width:100%;font-size:12px;">Inizia a Giocare</button>
+          <button class="btn-secondary" style="max-width:100%;font-size:11px;">Accedi / Registrati</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-group">
+      <h4>Scala dei Premi — Estratto</h4>
+      <div style="background:var(--navy-deep);border:1px solid rgba(212,175,55,0.15);border-radius:12px;overflow:hidden;min-width:220px;">
+        <div style="padding:10px 16px;background:rgba(212,175,55,0.06);border-bottom:1px solid rgba(212,175,55,0.15);font-family:var(--font-display);font-size:12px;color:var(--gold-main);text-align:center;">🍷 Scala Premi</div>
+        <div style="padding:8px 12px;display:flex;flex-direction:column;gap:3px;">
+          <div class="ladder-row milestone" style="padding:6px 10px">
+            <span class="ladder-q-num" style="color:var(--gold-main)">15</span>
+            <span class="ladder-q-name">Grand Cru</span>
+            <span class="ladder-prize">€100.000</span>
+          </div>
+          <div class="ladder-row" style="padding:5px 10px">
+            <span class="ladder-q-num">10</span>
+            <span class="ladder-q-name"></span>
+            <span class="ladder-prize">€10.000</span>
+          </div>
+          <div class="ladder-row milestone" style="padding:6px 10px">
+            <span class="ladder-q-num">9</span>
+            <span class="ladder-q-name">🛡 Sicuro</span>
+            <span class="ladder-prize">€5.000</span>
+          </div>
+          <div class="ladder-row current" style="padding:6px 10px">
+            <span class="ladder-q-num">▶</span>
+            <span class="ladder-q-name" style="color:var(--gold-bright)">Sei qui</span>
+            <span class="ladder-prize" style="color:var(--gold-bright)">€2.000</span>
+          </div>
+          <div class="ladder-row milestone" style="padding:6px 10px;opacity:0.5">
+            <span class="ladder-q-num">2</span>
+            <span class="ladder-q-name">🛡 Sicuro</span>
+            <span class="ladder-prize">€200</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ 5. BRAND GUIDELINES ═══════════════ -->
+<section class="section" id="guidelines">
+  <p class="section-label">Brand Identity</p>
+  <h2 class="section-title">Linee Guida del Brand</h2>
+  <div class="guidelines-grid">
+    <div class="guideline-card">
+      <h4>🎨 Identità Visiva</h4>
+      <p>Il design richiama <strong>Chi Vuol Essere Milionario</strong> attraverso la tensione emotiva dello sfondo scuro, le luci spot dorate e la progressione delle domande.<br><br>
+      Il <strong>bordeaux</strong> sostituisce il classico blu elettrico come colore emozionale, richiamando il vino e il lusso enologico.</p>
+    </div>
+    <div class="guideline-card">
+      <h4>🖋 Uso dei Font</h4>
+      <ul>
+        <li><strong>Cinzel</strong> — Titoli, logo, nomi livelli (evoca l'incisione romana sui calici)</li>
+        <li><strong>Playfair Display</strong> — Testo domande, descrizioni (eleganza classica)</li>
+        <li><strong>Raleway</strong> — UI, bottoni, risposte, label (leggibilità moderna)</li>
+      </ul>
+    </div>
+    <div class="guideline-card">
+      <h4>💡 Logica Colori</h4>
+      <ul>
+        <li><strong>Oro #D4AF37</strong> — Elementi premium, bordi attivi, CTA</li>
+        <li><strong>Bordeaux #7B2D3E</strong> — Accenti emozionali, livello Elite</li>
+        <li><strong>Verde #4CAF50</strong> — Solo risposta corretta</li>
+        <li><strong>Rosso #E53935</strong> — Solo risposta sbagliata</li>
+        <li><strong>Argento #C0C0C0</strong> — Livello Esperto / contenuto premium secondario</li>
+      </ul>
+    </div>
+    <div class="guideline-card">
+      <h4>🎮 UX Principi</h4>
+      <ul>
+        <li>Timer visivo sempre visibile con tensione crescente</li>
+        <li>Animazione risposta: highlight → conferma → reveal</li>
+        <li>3 traguardi sicuri per sessione (stile Milionario)</li>
+        <li>Aiuti ispirati alla cantina (non al telefono generico)</li>
+        <li>Progressione XP e titoli enologici (Sommelier Livello 3…)</li>
+      </ul>
+    </div>
+    <div class="guideline-card">
+      <h4>📱 Specifiche Layout</h4>
+      <ul>
+        <li>Target primario: mobile 390×844 (iPhone 14 Pro)</li>
+        <li>Safe area bottom: 34px (gesture bar)</li>
+        <li>Touch target minimo: 44×44px</li>
+        <li>Responsive: tablet in landscape con prize ladder laterale</li>
+        <li>Dark mode nativa (non previsto light mode)</li>
+      </ul>
+    </div>
+    <div class="guideline-card">
+      <h4>💎 Livelli di Gioco</h4>
+      <ul>
+        <li><strong>🍇 Appassionato</strong> — 15 domande, 30 sec, <strong>Gratis</strong></li>
+        <li><strong>🥂 Esperto</strong> — 20 domande, 25 sec, <strong>Premium</strong></li>
+        <li><strong>🏅 Sommelier</strong> — 25 domande, 20 sec, <strong>Elite</strong></li>
+      </ul>
+      <p style="margin-top:10px;">Fonte domande: documenti AIES, AIS, conoscenza AI + ricerca web continua</p>
+    </div>
+    <div class="guideline-card">
+      <h4>💳 Modello One-Shot</h4>
+      <ul>
+        <li><strong>Gratis</strong> — Livello Appassionato illimitato, classifiche base</li>
+        <li><strong>€4,99 una volta</strong> — Livello Esperto sbloccato per sempre</li>
+        <li><strong>€7,99 una volta</strong> — Livello Sommelier sbloccato per sempre</li>
+        <li><strong>€9,99 bundle</strong> — Esperto + Sommelier insieme (risparmio €2,99)</li>
+        <li><strong>€1,99 per pack</strong> — Pacchetti tematici di 40-50 nuove domande (ogni trimestre)</li>
+        <li>Nessun abbonamento, nessun rinnovo automatico</li>
+      </ul>
+    </div>
+    <div class="guideline-card">
+      <h4>🍷 Tematizzazione Aiuti</h4>
+      <ul>
+        <li><strong>50:50</strong> → elimina 2 risposte errate</li>
+        <li><strong>📞 Chiedi al Produttore</strong> → suggerimento testuale</li>
+        <li><strong>👥 Chiedi alla Cantina</strong> → "voto del pubblico" (poll simulato)</li>
+        <li><strong>🔄 Cambia Domanda</strong> → sostituisce la domanda corrente</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="doc-footer">
+  <p class="footer-logo">🍷 Chi Vuol Essere Sommelier?</p>
+  <p>Design System v1.0 · Creato con Claude · Maggio 2026<br>
+  Prossimo step: <strong>Web App Prototipo Funzionale</strong> → poi App Mobile (React Native / Flutter)</p>
+</footer>
+
+</body>
+</html>

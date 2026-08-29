@@ -1,0 +1,67 @@
+# ─────────────────────────────────────────────────────────────────
+# Chi Vuol Essere Sommelier? — GitHub Actions
+# Esporta le domande da Google Sheets → JSON su GitHub Pages
+# Trigger: push su main OPPURE ogni domenica alle 09:00 CET
+# ─────────────────────────────────────────────────────────────────
+
+name: Export Questions from Google Sheets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'questions/**'          # Trigger solo se le domande cambiano
+  schedule:
+    - cron: '0 8 * * 0'        # Ogni domenica alle 08:00 UTC (09:00 CET)
+  workflow_dispatch:             # Trigger manuale dal tab Actions
+
+jobs:
+  export-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write            # Necessario per fare commit dei JSON
+
+    steps:
+      # 1. Checkout del repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Setup Python
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. Installa dipendenze
+      - name: Install dependencies
+        run: |
+          pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+
+      # 4. Esporta le domande da Google Sheets
+      #    Il script legge il foglio e genera i JSON in questions/
+      - name: Export questions from Google Sheets
+        env:
+          GOOGLE_SHEETS_CREDENTIALS: ${{ secrets.GOOGLE_SHEETS_CREDENTIALS }}
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+        run: |
+          python scripts/export_questions.py
+
+      # 5. Commit e push dei JSON aggiornati (solo se ci sono modifiche)
+      - name: Commit updated JSON files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add questions/*.json
+          git diff --staged --quiet || git commit -m "🍷 Auto-update questions from Google Sheets [$(date +'%Y-%m-%d')]"
+          git push
+        continue-on-error: true   # Non fallire se non ci sono modifiche
+
+      # 6. Deploy su GitHub Pages (pubblica index.html + questions/ come sito)
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./          # Pubblica tutto il repo
+          publish_branch: gh-pages
+          exclude_assets: '.github,scripts,*.md,.gitignore'

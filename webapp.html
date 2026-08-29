@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Chi Vuol Essere Sommelier?</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;700;900&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─── TOKENS ─── */
+:root{
+  --black:#07080F; --navy:#0D0E1F; --navy2:#131530; --navy3:#1C1F45;
+  --gold:#D4AF37; --gold-b:#FFD700; --gold-d:#9A7D1E; --gold-dim:#6B571A;
+  --wine:#7B2D3E; --wine-l:#A33F54; --wine-d:#4A1627;
+  --cream:#F5ECD7; --silver:#C0C0C0;
+  --green:#4CAF50; --red:#E53935;
+  --shadow-g:0 0 32px rgba(212,175,55,.45),0 0 64px rgba(212,175,55,.12);
+  --glow-a:0 0 20px rgba(212,175,55,.5);
+  --fd:'Cinzel',serif; --fb:'Playfair Display',serif; --fu:'Raleway',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
+
+/* ─── PHONE SHELL ─── */
+#app{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#05060C;
+}
+#phone{
+  position:relative;width:min(420px,100vw);height:min(820px,100vh);
+  background:var(--black);border-radius:clamp(0px,4vw,36px);overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06);
+}
+
+/* ─── SCREENS ─── */
+.screen{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  overflow:hidden;overflow-y:auto;
+}
+.screen.active{display:flex}
+
+/* ─── SPLASH ─── */
+#s-splash{
+  background:radial-gradient(ellipse 80% 50% at 50% 65%,rgba(123,45,62,.4) 0%,transparent 70%),
+             radial-gradient(ellipse 60% 40% at 50% 25%,rgba(212,175,55,.1) 0%,transparent 60%),
+             linear-gradient(180deg,#07080F 0%,#0D0E20 50%,#100A14 100%);
+  align-items:center;justify-content:center;padding:48px 28px 32px;gap:0;
+}
+.stars{position:absolute;inset:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:rgba(255,255,255,.7)}
+.splash-icon{font-size:72px;margin-bottom:4px;filter:drop-shadow(0 0 24px rgba(212,175,55,.7));animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.eyebrow{font-family:var(--fu);font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:6px}
+.splash-title{font-family:var(--fd);font-size:22px;text-align:center;line-height:1.3;color:#fff;margin-bottom:2px}
+.splash-title span{color:var(--gold);display:block;font-size:26px}
+.splash-sub{font-family:var(--fb);font-style:italic;font-size:12px;color:rgba(255,255,255,.5);margin-bottom:28px;text-align:center}
+.divider{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 26px}
+.btn-gold{
+  width:100%;max-width:260px;padding:15px 24px;
+  background:linear-gradient(135deg,#B8960C,#D4AF37,#FFD700,#D4AF37,#9A7D1E);
+  border:none;border-radius:999px;font-family:var(--fd);font-size:13px;font-weight:700;
+  letter-spacing:2px;color:#1A1000;cursor:pointer;box-shadow:var(--shadow-g);
+  text-transform:uppercase;margin-bottom:12px;transition:transform .15s,box-shadow .15s;
+}
+.btn-gold:active{transform:scale(.97)}
+.btn-outline{
+  width:100%;max-width:260px;padding:12px 24px;background:transparent;
+  border:1px solid rgba(212,175,55,.4);border-radius:999px;font-family:var(--fu);
+  font-size:11px;font-weight:600;letter-spacing:2px;color:var(--gold);
+  cursor:pointer;text-transform:uppercase;transition:border-color .2s;
+}
+.btn-outline:active{border-color:var(--gold)}
+.splash-footer{position:absolute;bottom:18px;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1px;font-family:var(--fu)}
+
+/* ─── LEVELS ─── */
+#s-levels{background:linear-gradient(180deg,#0A0B18,#0E1020)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:52px 20px 16px}
+.topbar-title{font-family:var(--fd);font-size:14px;color:var(--gold);letter-spacing:3px}
+.back-btn,.icon-btn-top{font-size:20px;color:var(--gold);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(212,175,55,.08);border-radius:50%;border:1px solid rgba(212,175,55,.2)}
+.section-hint{font-family:var(--fd);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);text-align:center;margin-bottom:4px;padding:0 20px}
+.section-sub{font-family:var(--fb);font-style:italic;font-size:13px;color:var(--cream);text-align:center;margin-bottom:20px;padding:0 20px}
+.levels-wrap{display:flex;flex-direction:column;gap:10px;padding:0 16px;flex:1}
+.lv-card{border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;border:1px solid transparent;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s}
+.lv-card:active{transform:scale(.98)}
+.lv-card.free{background:linear-gradient(135deg,#1A1F3A,#232850);border-color:rgba(212,175,55,.4);box-shadow:var(--shadow-g)}
+.lv-card.locked{background:linear-gradient(135deg,#111120,#191925);border-color:rgba(255,255,255,.06);opacity:.75}
+.lv-badge{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.lv-badge.g1{background:linear-gradient(135deg,var(--gold-d),var(--gold))}
+.lv-badge.g2{background:linear-gradient(135deg,#3A3A4A,#5A5A6A)}
+.lv-badge.g3{background:linear-gradient(135deg,var(--wine-d),var(--wine))}
+.lv-info{flex:1}
+.lv-name{font-family:var(--fd);font-size:14px;color:#fff;margin-bottom:2px}
+.lv-desc{font-family:var(--fu);font-size:10px;color:rgba(255,255,255,.5);line-height:1.4}
+.lv-tag{font-family:var(--fu);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.tag-free{background:rgba(212,175,55,.2);color:var(--gold);border:1px solid var(--gold-dim)}
+.tag-pro{background:rgba(192,192,192,.12);color:var(--silver);border:1px solid rgba(192,192,192,.25)}
+.tag-elite{background:rgba(123,45,62,.25);color:#E88098;border:1px solid rgba(123,45,62,.5)}
+.lock{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.4}
+.levels-footer{padding:14px 16px 24px;text-align:center;font-family:var(--fu);font-size:10px;color:rgba(255,255,255,.35);line-height:1.5}
+.levels-footer strong{color:var(--gold)}
+
+/* ─── GAME SCREEN ─── */
+#s-game{
+  background:radial-gradient(ellipse 120% 50% at 50% 100%,rgba(123,45,62,.22) 0%,transparent 65%),
+             linear-gradient(180deg,#07080F,#0D0E20);
+}
+.game-topbar{display:flex;align-items:center;justify-content:space-between;padding:52px 18px 10px}
+.game-lvpill{padding:4px 11px;background:rgba(212,175,55,.12);border:1px solid var(--gold-dim);border-radius:20px;font-size:9px;font-family:var(--fu);letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.game-score{font-family:var(--fd);font-size:13px;color:var(--gold)}
+.timer-wrap{position:relative;width:38px;height:38px;flex-shrink:0}
+.timer-wrap svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.timer-bg{fill:none;stroke:rgba(212,175,55,.15);stroke-width:3}
+.timer-arc{fill:none;stroke:var(--gold-b);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .9s linear,stroke .5s}
+.timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--gold-b)}
+
+/* progress dots */
+.prog-dots{display:flex;justify-content:center;gap:4px;padding:0 18px 10px}
+.pdot{height:4px;border-radius:2px;background:rgba(255,255,255,.1);transition:all .3s;flex:1;max-width:22px}
+.pdot.done{background:rgba(212,175,55,.4)}
+.pdot.current{background:var(--gold);box-shadow:0 0 6px rgba(212,175,55,.7)}
+
+/* question */
+.q-box{margin:0 14px 12px;padding:18px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(212,175,55,.2);border-radius:16px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.q-num{font-family:var(--fu);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:8px}
+.q-text{font-family:var(--fb);font-size:14px;line-height:1.55;color:#fff}
+
+/* answers */
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 10px}
+.ans{padding:11px 8px;border-radius:10px;background:linear-gradient(135deg,rgba(20,22,45,.92),rgba(28,30,55,.92));border:1px solid rgba(212,175,55,.22);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .18s;position:relative;overflow:hidden;min-height:52px}
+.ans::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,175,55,.07),transparent);opacity:0;transition:opacity .18s}
+.ans:not(.locked-ans):hover::before{opacity:1}
+.ans:not(.locked-ans):hover{border-color:rgba(212,175,55,.6);box-shadow:var(--glow-a)}
+.ans.selected{border-color:var(--gold-b);box-shadow:var(--glow-a);background:linear-gradient(135deg,rgba(30,30,60,.95),rgba(40,42,80,.95))}
+.ans.correct{background:linear-gradient(135deg,rgba(30,90,30,.6),rgba(15,70,20,.8));border-color:var(--green);box-shadow:0 0 24px rgba(76,175,80,.4)}
+.ans.wrong{background:linear-gradient(135deg,rgba(110,18,18,.6),rgba(80,10,10,.8));border-color:var(--red);box-shadow:0 0 24px rgba(229,57,53,.4)}
+.ans.hidden{visibility:hidden;pointer-events:none}
+.ans.locked-ans{pointer-events:none}
+.ans-letter{width:24px;height:24px;border-radius:50%;background:rgba(212,175,55,.14);border:1.5px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:11px;font-weight:700;color:var(--gold);flex-shrink:0;transition:all .18s}
+.ans.selected .ans-letter{background:rgba(212,175,55,.28);border-color:var(--gold-b);color:var(--gold-b)}
+.ans.correct .ans-letter{background:rgba(76,175,80,.25);border-color:var(--green);color:var(--green)}
+.ans.wrong .ans-letter{background:rgba(229,57,53,.2);border-color:var(--red);color:var(--red)}
+.ans-text{font-family:var(--fu);font-size:11px;line-height:1.35;color:#fff;text-align:left}
+
+/* lifelines */
+.lifelines{display:flex;justify-content:center;gap:12px;padding:6px 14px 10px}
+.ll-btn{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:opacity .2s}
+.ll-btn.used{opacity:.25;pointer-events:none}
+.ll-circle{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1A1F3A,#232850);border:1.5px solid var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 12px rgba(212,175,55,.2);font-family:var(--fd);color:var(--gold);font-weight:700;font-size:14px}
+.ll-label{font-family:var(--fu);font-size:7.5px;color:rgba(255,255,255,.4);text-align:center;max-width:48px;line-height:1.3}
+.ladder-toggle{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.lt-circle{width:40px;height:40px;border-radius:50%;background:rgba(123,45,62,.25);border:1.5px solid rgba(163,63,84,.4);display:flex;align-items:center;justify-content:center;font-size:18px}
+.lt-label{font-family:var(--fu);font-size:7.5px;color:rgba(255,255,255,.3);text-align:center;max-width:48px;line-height:1.3}
+
+/* ─── WIN SCREEN ─── */
+#s-win{background:radial-gradient(ellipse 80% 60% at 50% 70%,rgba(212,175,55,.22) 0%,transparent 65%),linear-gradient(180deg,#07080F,#0D0E20);align-items:center;justify-content:center;padding:40px 28px;gap:0}
+.win-icon{font-size:80px;margin-bottom:12px;filter:drop-shadow(0 0 30px rgba(212,175,55,.7));animation:float 2.5s ease-in-out infinite}
+.win-eyebrow{font-family:var(--fu);font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.win-title{font-family:var(--fd);font-size:26px;color:#fff;text-align:center;margin-bottom:4px;text-shadow:0 0 30px rgba(212,175,55,.5)}
+.win-prize{font-family:var(--fd);font-size:32px;color:var(--gold-b);text-align:center;margin-bottom:6px;text-shadow:var(--shadow-g)}
+.win-sub{font-family:var(--fb);font-style:italic;font-size:13px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:28px}
+.divider-gold{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 24px}
+
+/* ─── GAME OVER ─── */
+#s-gameover{background:radial-gradient(ellipse 80% 60% at 50% 70%,rgba(123,45,62,.3) 0%,transparent 65%),linear-gradient(180deg,#07080F,#100810);align-items:center;justify-content:center;padding:40px 28px;gap:0}
+.go-icon{font-size:72px;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(229,57,53,.5))}
+.go-title{font-family:var(--fd);font-size:22px;color:#fff;text-align:center;margin-bottom:6px}
+.go-wrong{font-family:var(--fb);font-size:13px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:4px;padding:0 10px}
+.go-correct-ans{font-family:var(--fb);font-style:italic;font-size:14px;color:var(--green);text-align:center;margin-bottom:6px;padding:0 10px}
+.go-safe{font-family:var(--fu);font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:24px}
+.go-safe strong{color:var(--gold)}
+.btn-wine{width:100%;max-width:260px;padding:14px;background:linear-gradient(135deg,var(--wine-d),var(--wine));border:none;border-radius:999px;font-family:var(--fd);font-size:13px;font-weight:700;letter-spacing:2px;color:#fff;cursor:pointer;margin-bottom:10px;transition:transform .15s}
+.btn-wine:active{transform:scale(.97)}
+
+/* ─── PAYWALL ─── */
+#s-paywall{background:radial-gradient(ellipse 80% 60% at 50% 80%,rgba(123,45,62,.3) 0%,transparent 65%),linear-gradient(180deg,#07080F,#0E0C18);align-items:center;padding:52px 20px 32px;gap:0}
+.pw-icon{font-size:52px;margin-bottom:12px}
+.pw-eyebrow{font-family:var(--fu);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pw-title{font-family:var(--fd);font-size:20px;text-align:center;color:#fff;margin-bottom:6px;line-height:1.3}
+.pw-sub{font-family:var(--fb);font-style:italic;font-size:11px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:20px;line-height:1.5;padding:0 8px}
+.pw-cards{display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:16px}
+.pw-card{padding:13px 14px;border-radius:12px;border:1px solid rgba(212,175,55,.18);background:rgba(255,255,255,.03);display:flex;align-items:center;gap:11px;position:relative;cursor:pointer;transition:border-color .2s,background .2s}
+.pw-card:hover{background:rgba(212,175,55,.06);border-color:rgba(212,175,55,.4)}
+.pw-card.featured{background:rgba(212,175,55,.07);border-color:var(--gold);box-shadow:var(--shadow-g)}
+.pw-badge{position:absolute;top:-8px;right:12px;padding:2px 8px;background:var(--gold);border-radius:10px;font-size:8px;font-family:var(--fu);font-weight:700;letter-spacing:1px;color:#1A1000;text-transform:uppercase}
+.pw-card-icon{font-size:22px;flex-shrink:0}
+.pw-card-info{flex:1}
+.pw-card-name{font-family:var(--fd);font-size:13px;color:#fff;margin-bottom:1px}
+.pw-card-desc{font-family:var(--fu);font-size:9px;color:rgba(255,255,255,.45);line-height:1.4}
+.pw-price{text-align:right}
+.pw-price-main{font-family:var(--fd);font-size:16px;color:var(--gold);display:block}
+.pw-price-sub{font-family:var(--fu);font-size:8px;color:rgba(255,255,255,.35)}
+.pw-restore{font-family:var(--fu);font-size:9px;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:underline;text-align:center;margin-top:6px}
+
+/* ─── LADDER OVERLAY ─── */
+#s-ladder{background:rgba(5,6,12,.95);backdrop-filter:blur(10px)}
+.ladder-header{display:flex;align-items:center;justify-content:space-between;padding:52px 20px 16px}
+.ladder-title{font-family:var(--fd);font-size:14px;color:var(--gold);letter-spacing:3px}
+.close-btn{font-size:20px;color:rgba(255,255,255,.4);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.ladder-list{display:flex;flex-direction:column;gap:3px;padding:0 18px 24px}
+.l-row{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-radius:8px;border:1px solid transparent;transition:all .2s}
+.l-row.safe{background:rgba(212,175,55,.07);border-color:rgba(212,175,55,.25)}
+.l-row.current{background:rgba(212,175,55,.18);border-color:var(--gold);box-shadow:var(--shadow-g)}
+.l-row.done-row{background:rgba(255,255,255,.02)}
+.l-q{font-family:var(--fu);font-size:10px;color:rgba(255,255,255,.35);width:22px}
+.l-row.current .l-q{color:var(--gold)}
+.l-label{font-family:var(--fu);font-size:10px;color:#fff;flex:1;padding:0 8px}
+.l-row.current .l-label{color:var(--gold-b);font-weight:700}
+.l-prize{font-family:var(--fd);font-size:11px;color:var(--gold)}
+.l-row.safe .l-prize{color:var(--gold-b);font-weight:700}
+.l-row.current .l-prize{color:var(--gold-b);font-weight:700}
+.l-done{font-size:11px;margin-left:4px;color:rgba(76,175,80,.7)}
+
+/* ─── MODALS ─── */
+.modal-overlay{position:absolute;inset:0;background:rgba(5,6,12,.88);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px;z-index:100}
+.modal-overlay.open{display:flex}
+.modal{background:linear-gradient(135deg,#111528,#161A35);border:1px solid rgba(212,175,55,.3);border-radius:18px;padding:28px 22px;width:100%;max-width:340px;box-shadow:var(--shadow-g)}
+.modal-icon{font-size:42px;text-align:center;margin-bottom:12px}
+.modal-title{font-family:var(--fd);font-size:16px;color:var(--gold);text-align:center;margin-bottom:8px;letter-spacing:1px}
+.modal-body{font-family:var(--fb);font-style:italic;font-size:13px;color:rgba(255,255,255,.7);text-align:center;line-height:1.6;margin-bottom:20px}
+.audience-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.a-bar-row{display:flex;align-items:center;gap:10px}
+.a-bar-label{font-family:var(--fd);font-size:11px;color:var(--gold);width:16px}
+.a-bar-track{flex:1;height:22px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;position:relative}
+.a-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:4px;transition:width 1.2s ease;width:0}
+.a-bar-pct{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:var(--fu);font-size:10px;font-weight:700;color:#fff}
+.modal-btn{width:100%;padding:13px;background:linear-gradient(135deg,#B8960C,var(--gold),var(--gold-b),var(--gold),var(--gold-d));border:none;border-radius:30px;font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:2px;color:#1A1000;cursor:pointer;text-transform:uppercase;box-shadow:var(--shadow-g)}
+
+/* ─── PRIZE CLIMB SCREEN ─── */
+#s-prizeclimb{
+  background:
+    radial-gradient(ellipse 90% 45% at 50% 0%,rgba(212,175,55,.18) 0%,transparent 55%),
+    radial-gradient(ellipse 70% 40% at 50% 100%,rgba(123,45,62,.2) 0%,transparent 60%),
+    linear-gradient(180deg,#07080F,#0D0E20);
+}
+.pc-header{
+  display:flex;flex-direction:column;align-items:center;
+  padding:52px 24px 14px;flex-shrink:0;
+}
+.pc-check{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(76,175,80,.15);border:2px solid var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;color:var(--green);
+  box-shadow:0 0 28px rgba(76,175,80,.45),0 0 56px rgba(76,175,80,.15);
+  margin-bottom:10px;
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.pc-eyebrow{font-family:var(--fu);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+.pc-prize-main{
+  font-family:var(--fd);font-size:30px;color:var(--gold-b);
+  margin-bottom:6px;
+  animation:goldPulse 1.8s ease-in-out infinite;
+}
+@keyframes goldPulse{
+  0%,100%{text-shadow:0 0 20px rgba(212,175,55,.5)}
+  50%{text-shadow:0 0 50px rgba(212,175,55,1),0 0 100px rgba(212,175,55,.4)}
+}
+.pc-safe-badge{
+  font-family:var(--fu);font-size:11px;color:var(--gold);font-weight:700;
+  letter-spacing:1px;padding:4px 14px;border:1px solid rgba(212,175,55,.4);
+  border-radius:20px;background:rgba(212,175,55,.1);
+  box-shadow:0 0 12px rgba(212,175,55,.2);
+  margin-bottom:4px;
+}
+.pc-safe-badge.hide{visibility:hidden}
+
+/* ladder inside prize climb */
+.pc-ladder{
+  flex:1;overflow-y:auto;padding:6px 16px 4px;
+  display:flex;flex-direction:column;gap:3px;
+  scrollbar-width:none;
+}
+.pc-ladder::-webkit-scrollbar{display:none}
+.pc-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 11px;border-radius:8px;border:1px solid transparent;
+  transition:all .4s;flex-shrink:0;
+}
+.pc-row.pc-done{opacity:.35}
+.pc-row.pc-future{background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.05)}
+.pc-row.pc-safe-future{background:rgba(212,175,55,.04);border-color:rgba(212,175,55,.18)}
+.pc-row.pc-current{
+  background:rgba(212,175,55,.18);border-color:var(--gold);
+  box-shadow:0 0 22px rgba(212,175,55,.45),inset 0 0 22px rgba(212,175,55,.06);
+  transform:scale(1.03);
+}
+.pc-row-q{font-family:var(--fu);font-size:10px;color:rgba(255,255,255,.3);width:22px;flex-shrink:0}
+.pc-row.pc-current .pc-row-q{color:var(--gold-b);font-weight:700}
+.pc-row-label{flex:1;padding:0 8px;font-family:var(--fu);font-size:10px;color:rgba(255,255,255,.4)}
+.pc-row.pc-current .pc-row-label{color:var(--gold);font-weight:600}
+.pc-row-prize{font-family:var(--fd);font-size:11px;color:var(--gold)}
+.pc-row.pc-current .pc-row-prize{font-size:15px;color:var(--gold-b);font-weight:700}
+.pc-row-done{font-size:11px;margin-left:4px;color:rgba(76,175,80,.55)}
+
+/* auto-advance footer */
+.pc-footer{padding:10px 20px 22px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.pc-timer-bar{width:100%;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.pc-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold-b));border-radius:2px;width:0%}
+.btn-next{
+  width:100%;max-width:260px;padding:13px 24px;
+  background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.4);
+  border-radius:999px;font-family:var(--fd);font-size:12px;font-weight:700;
+  letter-spacing:2px;color:var(--gold);cursor:pointer;text-transform:uppercase;
+  transition:all .2s;
+}
+.btn-next:hover{background:rgba(212,175,55,.22);border-color:var(--gold)}
+.btn-next:active{transform:scale(.97)}
+
+/* ─── TOAST ─── */
+#toast{position:absolute;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,35,60,.95);border:1px solid rgba(212,175,55,.35);border-radius:12px;padding:10px 20px;font-family:var(--fu);font-size:12px;color:var(--gold);white-space:nowrap;opacity:0;transition:all .35s;z-index:200;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ─── UTILS ─── */
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="phone">
+
+<!-- ═══ SPLASH ═══ -->
+<div class="screen active" id="s-splash">
+  <div class="stars" id="stars"></div>
+  <div class="splash-icon">🍷</div>
+  <p class="eyebrow">Il Quiz del Vino</p>
+  <h1 class="splash-title">Chi Vuol Essere<span>Sommelier?</span></h1>
+  <p class="splash-sub">Metti alla prova la tua cultura enologica</p>
+  <div class="divider"></div>
+  <button class="btn-gold" onclick="showScreen('s-levels')">Inizia a Giocare</button>
+  <button class="btn-outline" onclick="showPaywall(0)">Sblocca Livelli</button>
+  <div class="splash-footer">🏆 Classifiche · 🍇 3 Livelli · 🎓 Impara il vino</div>
+</div>
+
+<!-- ═══ LEVELS ═══ -->
+<div class="screen" id="s-levels">
+  <div class="topbar">
+    <div class="back-btn" onclick="showScreen('s-splash')">←</div>
+    <span class="topbar-title">LIVELLI</span>
+    <div style="width:32px"></div>
+  </div>
+  <p class="section-hint">Quanto conosci il vino?</p>
+  <p class="section-sub">Scegli la tua sfida e conquista il titolo</p>
+  <div class="levels-wrap">
+    <div class="lv-card free" onclick="startLevel(1)">
+      <div class="lv-badge g1">🍇</div>
+      <div class="lv-info">
+        <p class="lv-name">Appassionato</p>
+        <p class="lv-desc">Vitigni famosi, regioni, abbinamenti base</p>
+        <p class="lv-desc" style="margin-top:4px;color:var(--gold-dim)">15 domande · 30 sec · Scala fino a €100.000</p>
+      </div>
+      <span class="lv-tag tag-free">Gratis</span>
+    </div>
+    <div class="lv-card" id="lv-card-2" onclick="tryLevel(2)">
+      <div class="lv-badge g2">🥂</div>
+      <div class="lv-info">
+        <p class="lv-name">Esperto</p>
+        <p class="lv-desc">DOC/DOCG approfondite, tecniche di vinificazione</p>
+        <p class="lv-desc" style="margin-top:4px;color:rgba(192,192,192,.35)">15 domande · 25 sec · Scala fino a €500.000</p>
+      </div>
+      <span class="lv-tag tag-pro">€4,99</span>
+      <span class="lock" id="lock-2">🔒</span>
+    </div>
+    <div class="lv-card" id="lv-card-3" onclick="tryLevel(3)">
+      <div class="lv-badge g3">🏅</div>
+      <div class="lv-info">
+        <p class="lv-name">Sommelier</p>
+        <p class="lv-desc">Enografia mondiale, annate, Master Sommelier</p>
+        <p class="lv-desc" style="margin-top:4px;color:rgba(232,128,152,.35)">15 domande · 20 sec · Scala fino a €1.000.000</p>
+      </div>
+      <span class="lv-tag tag-elite">€7,99</span>
+      <span class="lock" id="lock-3">🔒</span>
+    </div>
+  </div>
+  <div class="levels-footer">
+    Acquisto <strong>una tantum</strong> · Nessun abbonamento · Tuo per sempre<br>
+    Bundle Esperto + Sommelier: <strong>€9,99</strong>
+  </div>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div class="screen" id="s-game">
+  <div class="game-topbar">
+    <span class="game-lvpill" id="g-lvpill">🍇 Appassionato</span>
+    <span class="game-score" id="g-score">€ 0</span>
+    <div class="timer-wrap">
+      <svg viewBox="0 0 38 38" width="38" height="38">
+        <circle class="timer-bg" cx="19" cy="19" r="16"/>
+        <circle class="timer-arc" id="timer-arc" cx="19" cy="19" r="16" stroke-dasharray="100.5" stroke-dashoffset="0"/>
+      </svg>
+      <div class="timer-num" id="timer-num">30</div>
+    </div>
+  </div>
+  <div class="prog-dots" id="prog-dots"></div>
+  <div class="q-box">
+    <p class="q-num" id="q-num">Domanda 1 di 15</p>
+    <p class="q-text" id="q-text">…</p>
+  </div>
+  <div class="answers" id="answers"></div>
+  <div class="lifelines">
+    <div class="ll-btn" id="ll-5050" onclick="use5050()">
+      <div class="ll-circle">50</div>
+      <span class="ll-label">50 : 50</span>
+    </div>
+    <div class="ll-btn" id="ll-hint" onclick="useHint()">
+      <div class="ll-circle">📞</div>
+      <span class="ll-label">Produttore</span>
+    </div>
+    <div class="ll-btn" id="ll-audience" onclick="useAudience()">
+      <div class="ll-circle">👥</div>
+      <span class="ll-label">Cantina</span>
+    </div>
+    <div class="ll-btn" id="ll-change" onclick="useChange()">
+      <div class="ll-circle">🔄</div>
+      <span class="ll-label">Cambia</span>
+    </div>
+    <div class="ladder-toggle" onclick="buildLadder();showScreen('s-ladder')">
+      <div class="lt-circle">🏆</div>
+      <span class="lt-label">Premi</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WIN ═══ -->
+<div class="screen" id="s-win">
+  <div class="win-icon">🏆</div>
+  <p class="win-eyebrow">Hai vinto!</p>
+  <h2 class="win-title">Complimenti,<br>Sei un Sommelier!</h2>
+  <p class="win-prize" id="win-prize">€ 100.000</p>
+  <p class="win-sub" id="win-sub">Hai risposto correttamente a tutte le domande</p>
+  <div class="divider-gold"></div>
+  <button class="btn-gold" style="max-width:260px" onclick="showScreen('s-levels')">Gioca ancora</button>
+  <button class="btn-outline mt12" style="max-width:260px" onclick="showScreen('s-splash')">Menu principale</button>
+</div>
+
+<!-- ═══ GAME OVER ═══ -->
+<div class="screen" id="s-gameover">
+  <div class="go-icon">😔</div>
+  <h2 class="go-title">Fine della partita!</h2>
+  <p class="go-wrong" id="go-wrong-text">La risposta sbagliata era:</p>
+  <p class="go-correct-ans" id="go-correct-ans">…</p>
+  <p class="go-safe" id="go-safe">Porti a casa: <strong>€ 0</strong></p>
+  <div class="divider-gold"></div>
+  <button class="btn-wine" onclick="restartSameLevel()">Rigioca stesso livello</button>
+  <button class="btn-outline" style="max-width:260px" onclick="showScreen('s-levels')">Scegli livello</button>
+</div>
+
+<!-- ═══ PAYWALL ═══ -->
+<div class="screen" id="s-paywall">
+  <div class="topbar" style="padding-top:52px">
+    <div class="back-btn" onclick="showScreen(state.lastScreen||'s-levels')">←</div>
+    <span class="topbar-title">SBLOCCA</span>
+    <div style="width:32px"></div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:0 20px 24px;overflow-y:auto">
+    <div class="pw-icon" id="pw-icon">🔓</div>
+    <p class="pw-eyebrow">Acquisto una tantum</p>
+    <h2 class="pw-title" id="pw-title">Sblocca il prossimo livello</h2>
+    <p class="pw-sub">Paghi una volta sola. Il livello è tuo per sempre, senza rinnovi o sorprese.</p>
+    <div class="pw-cards">
+      <div class="pw-card" onclick="purchase(2)">
+        <span class="pw-card-icon">🥂</span>
+        <div class="pw-card-info">
+          <p class="pw-card-name">Livello Esperto</p>
+          <p class="pw-card-desc">200+ domande · DOC/DOCG avanzate<br>Tecniche di vinificazione · Classifiche</p>
+        </div>
+        <div class="pw-price"><span class="pw-price-main">€4,99</span><span class="pw-price-sub">una volta</span></div>
+      </div>
+      <div class="pw-card" onclick="purchase(3)">
+        <span class="pw-card-icon">🏅</span>
+        <div class="pw-card-info">
+          <p class="pw-card-name">Livello Sommelier</p>
+          <p class="pw-card-desc">300+ domande · Enografia mondiale<br>Annate storiche · Master Sommelier</p>
+        </div>
+        <div class="pw-price"><span class="pw-price-main">€7,99</span><span class="pw-price-sub">una volta</span></div>
+      </div>
+      <div class="pw-card featured" onclick="purchase('bundle')">
+        <div class="pw-badge">Miglior valore</div>
+        <span class="pw-card-icon">🍷</span>
+        <div class="pw-card-info">
+          <p class="pw-card-name">Bundle Esperto + Sommelier</p>
+          <p class="pw-card-desc">Entrambi i livelli · Risparmio €2,99<br>Accesso immediato a tutto il contenuto</p>
+        </div>
+        <div class="pw-price"><span class="pw-price-main">€9,99</span><span class="pw-price-sub">una volta</span></div>
+      </div>
+    </div>
+    <p class="pw-restore" onclick="restoreAll()">Ripristina acquisti precedenti</p>
+  </div>
+</div>
+
+<!-- ═══ LADDER ═══ -->
+<div class="screen" id="s-ladder" style="background:rgba(5,6,12,.97)">
+  <div class="ladder-header">
+    <span class="ladder-title" id="ladder-title">🍇 SCALA PREMI</span>
+    <div class="close-btn" onclick="showLastGame()">✕</div>
+  </div>
+  <div class="ladder-list" id="ladder-list"></div>
+</div>
+
+<!-- ═══ PRIZE CLIMB ═══ -->
+<div class="screen" id="s-prizeclimb">
+  <div class="pc-header">
+    <div class="pc-check">✓</div>
+    <p class="pc-eyebrow">Risposta Corretta!</p>
+    <p class="pc-prize-main" id="pc-prize-main">€ 1.000</p>
+    <div class="pc-safe-badge hide" id="pc-safe-badge">🛡 Traguardo Sicuro Raggiunto!</div>
+  </div>
+  <div class="pc-ladder" id="pc-ladder"></div>
+  <div class="pc-footer">
+    <div class="pc-timer-bar"><div class="pc-bar-fill" id="pc-bar-fill"></div></div>
+    <button class="btn-next" onclick="proceedToNext()">Prossima domanda &nbsp;→</button>
+  </div>
+</div>
+
+<!-- ═══ MODALS ═══ -->
+<div class="modal-overlay" id="modal-hint">
+  <div class="modal">
+    <div class="modal-icon">📞</div>
+    <p class="modal-title">Il Produttore risponde…</p>
+    <p class="modal-body" id="modal-hint-text">…</p>
+    <button class="modal-btn" onclick="closeModal('modal-hint')">Ho capito, grazie!</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-audience">
+  <div class="modal">
+    <div class="modal-icon">👥</div>
+    <p class="modal-title">La Cantina ha votato!</p>
+    <div class="audience-bars" id="audience-bars"></div>
+    <button class="modal-btn" onclick="closeModal('modal-audience')">Grazie alla Cantina!</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-purchase-ok">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <p class="modal-title">Acquisto completato!</p>
+    <p class="modal-body" id="modal-purchase-text">Livello sbloccato con successo. Buona fortuna!</p>
+    <button class="modal-btn" onclick="closeModal('modal-purchase-ok'); showScreen('s-levels'); updateLevelCards()">Inizia a giocare!</button>
+  </div>
+</div>
+
+<div id="toast">…</div>
+
+</div><!-- /phone -->
+</div><!-- /app -->
+
+<script>
+/* ════════════════════════════════════════════
+   QUESTIONS DATABASE
+   ════════════════════════════════════════════ */
+const DB = {
+  1: [ // APPASSIONATO
+    { id:101, q:"In quale regione italiana si produce il Barolo, detto 'Il Re dei vini italiani'?", opts:["Toscana","Piemonte","Veneto","Sicilia"], a:1, hint:"Il Barolo si produce nelle Langhe, nell'area di Alba (CN). Il vitigno è il Nebbiolo.", cat:"Regioni" },
+    { id:102, q:"Quale vitigno è alla base del Brunello di Montalcino DOCG?", opts:["Nebbiolo","Montepulciano","Sangiovese","Aglianico"], a:2, hint:"A Montalcino il Sangiovese viene chiamato 'Brunello'. È uno dei vini più longevi d'Italia.", cat:"Vitigni" },
+    { id:103, q:"A quale temperatura si serve generalmente un grande vino rosso strutturato e invecchiato?", opts:["8-10 °C","12-14 °C","16-18 °C","22-24 °C"], a:2, hint:"I vini rossi importanti si servono leggermente freschi rispetto alla temperatura ambiente (18-20 °C).", cat:"Servizio" },
+    { id:104, q:"Quale vitigno è la base del Prosecco DOC/DOCG?", opts:["Vermentino","Glera","Garganega","Cortese"], a:1, hint:"Il nome 'Prosecco' era sia il nome del vitigno che del vino. Dal 2009 il vitigno si chiama ufficialmente Glera.", cat:"Vitigni" },
+    { id:105, q:"Cosa significa esattamente la sigla DOCG?", opts:["Denominazione di Qualità Certificata e Garantita","Denominazione di Origine Controllata e Garantita","Distillato di Origine Certificato e Garantito","Denominazione d'Origine Comune Garantita"], a:1, hint:"La G finale sta per 'Garantita': è il livello più alto della piramide qualitativa del vino italiano.", cat:"Legislazione" },
+    { id:106, q:"In quale regione si produce il Chianti DOCG?", opts:["Umbria","Lazio","Toscana","Marche"], a:2, hint:"Il Chianti è il vino simbolo della Toscana, prodotto principalmente tra Firenze e Siena.", cat:"Regioni" },
+    { id:107, q:"Cosa distingue la produzione dell'Amarone della Valpolicella dagli altri vini rossi?", opts:["Viene prodotto con uve ghiacciate","Viene prodotto con uve appassite per mesi","Viene invecchiato in mare","Viene arricchito con alcol etilico"], a:1, hint:"Le uve (Corvina, Molinara, Rondinella) vengono fatte appassire per 3-4 mesi prima della vinificazione.", cat:"Vinificazione" },
+    { id:108, q:"Con quale metodo si producono Franciacorta e Champagne?", opts:["Metodo Charmat","Metodo Ancestrale","Metodo Classico","Carbonatazione artificiale"], a:2, hint:"Il Metodo Classico prevede la rifermentazione in bottiglia con affinamento sui lieviti.", cat:"Spumanti" },
+    { id:109, q:"Quale vino si abbina classicamente al pesce e ai frutti di mare?", opts:["Barolo","Amarone","Vino bianco secco","Vino rosso tannico"], a:2, hint:"La regola classica vuole il bianco col pesce: il tannino del rosso si 'metallizza' con le proteine del pesce.", cat:"Abbinamenti" },
+    { id:110, q:"Quale vitigno produce sia il Barolo che il Barbaresco?", opts:["Sangiovese","Montepulciano","Nebbiolo","Corvina"], a:2, hint:"Il Nebbiolo è il nobile vitigno piemontese, re delle Langhe. Prende il nome dalla 'nebbia' autunnale.", cat:"Vitigni" },
+    { id:111, q:"La Vernaccia di San Gimignano è storicamente nota per essere:", opts:["Il primo vino italiano esportato in USA","La prima DOC riconosciuta in Italia (1966)","Il vino preferito di Leonardo da Vinci","Il vitigno più antico della penisola"], a:1, hint:"Nel 1966 fu firmato il decreto che istituiva la prima DOC italiana proprio per la Vernaccia di San Gimignano.", cat:"Storia" },
+    { id:112, q:"Il Franciacorta DOCG si produce in quale regione italiana?", opts:["Piemonte","Veneto","Trentino","Lombardia"], a:3, hint:"La Franciacorta è una zona collinare in provincia di Brescia, in Lombardia.", cat:"Regioni" },
+    { id:113, q:"Come si chiama la piccola botte da 225 litri di origine bordolese usata per molti grandi vini?", opts:["Tonneau","Barrique","Botte grande","Foudre"], a:1, hint:"La Barrique conferisce al vino note di vaniglia, tostatura e spezie. Fu resa celebre in Bordeaux.", cat:"Cantina" },
+    { id:114, q:"Quale operazione si effettua versando il vino in una caraffa prima del servizio?", opts:["Ossigenazione","Filtrazione","Decantazione","Centrifugazione"], a:2, hint:"La decantazione separa eventuali sedimenti e permette al vino di ossigerarsi, aprendo i profumi.", cat:"Servizio" },
+    { id:115, q:"Il Sangiovese è il vitigno rosso più coltivato in Italia. In Toscana può chiamarsi anche:", opts:["Brunello","Morellino","Prugnolo Gentile","Tutte le precedenti"], a:3, hint:"Il Sangiovese cambia nome secondo il territorio: Brunello a Montalcino, Morellino a Scansano, Prugnolo a Montepulciano.", cat:"Vitigni" },
+    { id:116, q:"A quale temperatura va servito un vino bianco leggero e aromatico?", opts:["4-6 °C","8-10 °C","14-16 °C","18-20 °C"], a:1, hint:"I bianchi leggeri si servono freschi ma non gelati, per preservarne i delicati profumi.", cat:"Servizio" },
+    { id:117, q:"La Grappa italiana si produce a partire da:", opts:["Succo d'uva fermentato","Vinacce (bucce e raspi) dopo la pigiatura","Vino distillato","Mele fermentate"], a:1, hint:"La Grappa è un distillato di vinacce — ciò che rimane dopo la spremitura dell'uva. È prodotta solo in Italia.", cat:"Distillati" },
+    { id:118, q:"La regione italiana principale per la produzione di Pinot Grigio di qualità è:", opts:["Campania","Sicilia","Friuli Venezia Giulia / Trentino-Alto Adige","Puglia"], a:2, hint:"Il Pinot Grigio di qualità proviene principalmente dal Nord-Est Italia, specie Friuli e Alto Adige.", cat:"Regioni" },
+    { id:119, q:"Montepulciano d'Abruzzo e Vino Nobile di Montepulciano sono due vini completamente diversi. Perché?", opts:["Sono lo stesso vino con nomi commerciali diversi","Il primo è a base del vitigno Montepulciano (Abruzzo), il secondo di Sangiovese (Toscana)","Sono entrambi prodotti in Toscana","Sono entrambi a base di Nebbiolo"], a:1, hint:"Attenzione all'omonimia: Montepulciano è sia un vitigno abruzzese sia un comune toscano. Due prodotti completamente diversi.", cat:"Vitigni" },
+    { id:120, q:"Il Moscato d'Asti DOCG è noto per essere:", opts:["Un vino rosso dolce frizzante","Un bianco dolce frizzante a bassa gradazione (~5,5%) prodotto in Piemonte","Uno spumante secco Metodo Classico","Un vino liquoroso aromatico del Sud Italia"], a:1, hint:"Il Moscato d'Asti è prodotto con il Moscato Bianco nelle Langhe. La bassa pressione e il basso alcol lo rendono unico.", cat:"Vitigni" },
+    { id:121, q:"Quale dei seguenti è uno spumante dolce e frizzante del Piemonte a bassa gradazione?", opts:["Barbera d'Asti","Moscato d'Asti DOCG","Gavi di Gavi","Dolcetto d'Alba"], a:1, hint:"Il Moscato d'Asti è uno spumante dolce prodotto con il Moscato Bianco nelle Langhe, con gradazione di circa 5,5% vol. Ideale come dessert.", cat:"Spumanti" },
+    { id:122, q:"Il Vermentino è un vitigno bianco tipico soprattutto di:", opts:["Sardegna e Liguria","Veneto e Friuli","Toscana e Umbria","Campania e Puglia"], a:0, hint:"Il Vermentino è diffuso in Sardegna (Vermentino di Gallura DOCG) e in Liguria (Riviera Ligure di Ponente). Produce bianchi fragranti con note agrumate e marine.", cat:"Vitigni" },
+    { id:123, q:"Il Lambrusco, vino frizzante spesso amabile o semisecco, è prodotto principalmente in:", opts:["Veneto","Emilia-Romagna","Lombardia","Piemonte"], a:1, hint:"Il Lambrusco è il simbolo enologico dell'Emilia-Romagna, con diverse denominazioni: Grasparossa di Castelvetro, Sorbara, Salamino di Santa Croce.", cat:"Regioni" },
+    { id:124, q:"Cosa si intende per 'vino passito'?", opts:["Vino invecchiato più di 5 anni","Vino prodotto con uve appassite dopo la vendemmia","Vino con zucchero aggiunto","Vino di vitigni autoctoni"], a:1, hint:"I passiti (Pantelleria, Recioto, Torcolato) si producono lasciando appassire le uve su graticci per concentrare zuccheri e aromi. Vengono poi vinificati come vini dolci.", cat:"Vinificazione" },
+    { id:125, q:"Il Lagrein è un vitigno rosso autoctono tipico di:", opts:["Campania","Valle d'Aosta","Alto Adige (Südtirol)","Calabria"], a:2, hint:"Il Lagrein è originario dell'Alto Adige. Produce rossi intensi e corposi (Dunkel) oppure rosati (Kretzer). Molto apprezzato nella zona di Bolzano.", cat:"Vitigni" },
+    { id:126, q:"Nell'abbinamento 'per similitudine', quale coppia è corretta?", opts:["Vino tannico con pesce delicato","Vino dolce con dessert dolce","Vino acido con cibi grassi","Vino leggero con selvaggina"], a:1, hint:"L'abbinamento per similitudine unisce caratteristiche simili: dolce con dolce, acido con acido. La regola opposta è 'per contrasto': vino acido con cibi grassi.", cat:"Abbinamenti" },
+    { id:127, q:"Quale piccola isola siciliana è famosa per il suo Passito di Pantelleria DOC?", opts:["Lipari","Ustica","Pantelleria","Lampedusa"], a:2, hint:"Il Passito di Pantelleria è prodotto con lo Zibibbo (Moscato d'Alessandria) appassito al sole nell'isola di Pantelleria. È uno dei vini dolci più famosi d'Italia.", cat:"Regioni" },
+    { id:128, q:"Cosa indica il termine 'Riserva' su un'etichetta DOC/DOCG italiana?", opts:["Vino conservato in cantina privata","Invecchiamento aggiuntivo obbligatorio previsto dal disciplinare","Vino biologico certificato","Produzione limitata sotto le 10.000 bottiglie"], a:1, hint:"Il termine 'Riserva' ha significato legale in Italia: il vino ha rispettato un periodo di invecchiamento più lungo del previsto dal disciplinare base.", cat:"Legislazione" },
+    { id:129, q:"Il Montepulciano d'Abruzzo DOC e il Vino Nobile di Montepulciano DOCG sono due vini diversi perché:", opts:["Sono lo stesso vino con etichette diverse","Il primo usa il vitigno Montepulciano in Abruzzo, il secondo usa Sangiovese in Toscana","Sono entrambi prodotti in Toscana","Sono entrambi a base di Nebbiolo"], a:1, hint:"Attenzione all'omonimia: 'Montepulciano' è sia un vitigno abruzzese sia un comune toscano. Due prodotti completamente diversi per vitigno e territorio.", cat:"Vitigni" },
+    { id:130, q:"Il Cannonau di Sardegna DOC è geneticamente identico a quale vitigno internazionale?", opts:["Nebbiolo","Grenache/Garnacha","Sangiovese","Syrah"], a:1, hint:"Il Cannonau è lo stesso vitigno del Grenache francese e della Garnacha spagnola, probabilmente portato in Sardegna dagli Aragonesi. È tra i vitigni più coltivati al mondo.", cat:"Vitigni" },
+    { id:131, q:"Quale ordine è corretto per l'analisi organolettica di un vino?", opts:["Olfattivo → visivo → gustativo","Gustativo → visivo → olfattivo","Visivo → olfattivo → gustativo","Non c'è un ordine prestabilito"], a:2, hint:"La sequenza corretta è: esame visivo (colore, limpidezza), esame olfattivo (intensità, complessità, profumi), esame gustativo (struttura, equilibrio, persistenza).", cat:"Degustazione" },
+    { id:132, q:"Il Brachetto d'Acqui DOCG è uno spumante piemontese caratterizzato da:", opts:["Colore bianco e profumi di agrumi","Colore rosso rubino, profumi di rosa e fragola, bassa gradazione (~5%)","Essere un rosso secco invecchiato in barrique","Metodo Classico con lunga sosta sui lieviti"], a:1, hint:"Il Brachetto d'Acqui è uno dei rari spumanti rossi dolci italiani di qualità. I profumi di rosa e fragolina e la bassa gradazione lo rendono ideale con il cioccolato fondente.", cat:"Spumanti" },
+    { id:133, q:"Il Vino Nobile di Montepulciano DOCG usa il Sangiovese locale chiamato:", opts:["Brunello","Morellino","Prugnolo Gentile","Tignolo"], a:2, hint:"A Montepulciano (Siena) il Sangiovese si chiama 'Prugnolo Gentile'. Non confondere con il comune toscano di Montepulciano e il vitigno Montepulciano d'Abruzzo.", cat:"Vitigni" },
+    { id:134, q:"Cosa significa 'vino in purezza' o 'monovitigno'?", opts:["Vino biologico senza solfiti","Vino prodotto con un unico vitigno, senza uvaggi","Vino non filtrato","Vino da vitigni antichi"], a:1, hint:"Un vino 'in purezza' è prodotto con una sola varietà d'uva. Al contrario, i blend (uvaggi) mescolano più vitigni per bilanciare caratteristiche diverse.", cat:"Enologia" },
+    { id:135, q:"La Falanghina è un vitigno bianco autoctono della:", opts:["Friuli Venezia Giulia","Sardegna","Campania","Sicilia"], a:2, hint:"La Falanghina è uno dei vitigni bianchi più antichi della Campania, probabilmente di origine greca. Produce bianchi freschi e profumati con note floreali e di agrumi.", cat:"Vitigni" },
+    { id:136, q:"A cosa serve la decantazione del vino prima del servizio?", opts:["Abbassare la gradazione alcolica","Separare eventuali sedimenti e ossigenare il vino per aprire i profumi","Aumentare la temperatura del vino","Filtrare i lieviti residui"], a:1, hint:"La decantazione ha due scopi: separare fisicamente i sedimenti (nei vini invecchiati) e ossigenare il vino per favorire l'apertura dei profumi e la morbidezza.", cat:"Servizio" },
+    { id:137, q:"Il Cerasuolo d'Abruzzo DOC è:", opts:["Un Montepulciano d'Abruzzo invecchiato","La versione rosata (rosé) del Montepulciano d'Abruzzo","Una DOCG recente per i bianchi abruzzesi","Uno spumante locale"], a:1, hint:"Il Cerasuolo d'Abruzzo è la versione rosata del Montepulciano d'Abruzzo. Il nome deriva dal colore 'cerasuolo' (ciliegia). È una DOC separata dal 2010.", cat:"Regioni" },
+    { id:138, q:"Cosa contraddistingue uno spumante 'Pas Dosé' o 'Brut Nature'?", opts:["Ha il dosaggio più alto di zucchero","Non ha nessuna aggiunta di zucchero dopo la sboccatura (residuo <3 g/l)","È prodotto senza solfiti","Ha una gradazione alcolica inferiore al 10%"], a:1, hint:"'Pas Dosé', 'Brut Nature' e 'Zero Dosage' indicano assenza totale di liqueur d'expédition dopo il dégorgement. È lo stile più secco degli spumanti.", cat:"Spumanti" },
+    { id:139, q:"Il Piemonte è paragonato alla Borgogna francese per i suoi grandi vini da quale vitigno?", opts:["Dolcetto","Barbera","Nebbiolo","Moscato"], a:2, hint:"Il Nebbiolo produce il Barolo e il Barbaresco, considerati tra i più grandi rossi del mondo per complessità e longevità, proprio come i Pinot Nero borgognoni.", cat:"Vitigni" },
+    { id:140, q:"Quale regione è la principale produttrice di Pinot Grigio di qualità in Italia?", opts:["Campania","Puglia","Friuli Venezia Giulia e Trentino-Alto Adige","Toscana"], a:2, hint:"Il Pinot Grigio di qualità proviene soprattutto dal Nord-Est Italia. In Friuli e Alto Adige produce vini con buona struttura e mineralità, molto distanti dal Pinot Grigio base.", cat:"Regioni" },
+  ],
+  2: [ // ESPERTO
+    { id:201, q:"Quale vitigno costituisce la base dell'Amarone della Valpolicella DOCG?", opts:["Merlot","Corvina Veronese","Barbera","Teroldego"], a:1, hint:"La Corvina Veronese (min. 45%) è il cuore dell'Amarone, completata da Corvinone, Rondinella e Molinara.", cat:"Vitigni" },
+    { id:202, q:"In cosa consiste la 'macerazione carbonica' usata per il Beaujolais Nouveau?", opts:["Macerazione con CO₂ aggiunta artificialmente","Fermentazione intra-cellulare di acini interi in atmosfera di CO₂","Tecnica di chiarifica con anidride carbonica","Aggiunta di CO₂ al termine della fermentazione"], a:1, hint:"Nella macerazione carbonica gli acini interi fermentano dentro sé stessi in assenza di ossigeno, producendo vini morbidi e fruttati.", cat:"Vinificazione" },
+    { id:203, q:"Il Sagrantino di Montefalco DOCG si produce in quale regione?", opts:["Toscana","Campania","Umbria","Marche"], a:2, hint:"Montefalco è in provincia di Perugia. Il Sagrantino è uno dei vini più tannici al mondo.", cat:"Regioni" },
+    { id:204, q:"Il vitigno Primitivo di Manduria è geneticamente identico a quale varietà?", opts:["Cabernet Sauvignon","Merlot","Zinfandel (California)","Petite Sirah"], a:2, hint:"Studi DNA condotti negli anni '90 hanno dimostrato che Primitivo e Zinfandel sono lo stesso vitigno, originario della Croazia (Tribidrag).", cat:"Vitigni" },
+    { id:205, q:"Qual è l'invecchiamento minimo totale per il Barolo (versione non Riserva)?", opts:["12 mesi","2 anni","38 mesi (di cui 18 in legno)","5 anni"], a:2, hint:"Il disciplinare del Barolo prevede almeno 38 mesi totali di invecchiamento, di cui almeno 18 in botti di legno.", cat:"Disciplinari" },
+    { id:206, q:"Cosa produce la fermentazione malolattica (FML) in un vino?", opts:["Aumenta l'acidità volatile","Converte l'acido malico (duro) in acido lattico (più morbido)","Aggiunge dolcezza residua","Aumenta il grado alcolico"], a:1, hint:"La FML è operata da batteri lattici e rende il vino più morbido e rotondo. Usata quasi sempre nei rossi e spesso nei bianchi burrosi come il Chardonnay.", cat:"Enologia" },
+    { id:207, q:"Il Gavi DOCG è prodotto in Piemonte con il vitigno:", opts:["Arneis","Favorita","Cortese","Timorasso"], a:2, hint:"Il Gavi (o Cortese di Gavi) è prodotto nel comune di Gavi, in provincia di Alessandria, con il vitigno Cortese.", cat:"Vitigni" },
+    { id:208, q:"Il Taurasi DOCG si produce in Campania con il vitigno:", opts:["Piedirosso","Falanghina","Aglianico","Greco di Tufo"], a:2, hint:"Il Taurasi è il grande rosso campano, a base di Aglianico, prodotto in provincia di Avellino. Richiede 36 mesi di invecchiamento.", cat:"Regioni" },
+    { id:209, q:"In cosa differisce il Metodo Charmat dal Metodo Classico per gli spumanti?", opts:["Il Charmat usa uve diverse","Nel Charmat la rifermentazione avviene in grandi autoclavi, non in bottiglia","Il Classico è sempre meno alcolico","Nel Charmat si usa solo Chardonnay"], a:1, hint:"Il Metodo Charmat (o Martinotti) prevede la rifermentazione in grandi vasche a pressione. È più economico e veloce del Metodo Classico.", cat:"Spumanti" },
+    { id:210, q:"I vini detti 'Supertuscan' (Sassicaia, Tignanello) sono classificati come:", opts:["DOCG Toscana","DOC Bolgheri (per alcuni) o IGT Toscana","Vini da Tavola","DOP Europea"], a:1, hint:"Nati fuori dai disciplinari classici perché usano vitigni internazionali come Cabernet e Merlot. Sassicaia ha poi ottenuto la sua DOC, altri sono rimasti IGT.", cat:"Legislazione" },
+    { id:211, q:"I tannini nel vino rosso derivano principalmente da:", opts:["La polpa dell'uva","Il legno delle botti di quercia","Le bucce, i vinaccioli e i raspi dell'uva","I lieviti durante la fermentazione"], a:2, hint:"I tannini sono polifenoli estratti durante la macerazione dalle bucce e dai vinaccioli. Il legno contribuisce tannini aggiuntivi nell'affinamento.", cat:"Enologia" },
+    { id:212, q:"La 'muffa nobile' (Botrytis cinerea) in condizioni ottimali è responsabile di:", opts:["Vini difettosi da eliminare","Vini liquorosi come il Porto","Grandi vini dolci come Sauternes e Trockenbeerenauslese","Vini effervescenti naturali"], a:2, hint:"La Botrytis cinerea disidrata gli acini concentrando zuccheri e aromi quando le condizioni climatiche sono favorevoli — alla base dei grandi vini dolci.", cat:"Enologia" },
+    { id:213, q:"Il Vermentino di Gallura ha ottenuto la DOCG. In quale regione si trova Gallura?", opts:["Campania","Puglia","Sardegna","Calabria"], a:2, hint:"La Gallura è il nord-est della Sardegna. Il Vermentino di Gallura DOCG è il bianco più pregiato dell'isola.", cat:"Regioni" },
+    { id:214, q:"Nella vinificazione in bianco, la spremitura avviene rispetto alla fermentazione:", opts:["Dopo una lunga macerazione","Prima della fermentazione, per separare il mosto dalle bucce","Durante la fermentazione","Dopo l'invecchiamento in botte"], a:1, hint:"Nel vino bianco si vuole evitare l'estrazione di tannini e colore dalle bucce, quindi si pressano subito le uve.", cat:"Vinificazione" },
+    { id:215, q:"Il Brunello di Montalcino DOCG prevede nel disciplinare:", opts:["Uvaggio di almeno 3 vitigni","100% Sangiovese con invecchiamento minimo 5 anni","Minimo 50% Sangiovese + internazionali","Invecchiamento di 10 anni obbligatorio"], a:1, hint:"Il Brunello è uno dei vini italiani più puri: solo Sangiovese (localmente detto Brunello), almeno 5 anni di invecchiamento (6 per la Riserva).", cat:"Disciplinari" },
+    { id:216, q:"Il vino 'Ramato' è un tipo di Pinot Grigio caratterizzato da:", opts:["Colore rosso intenso dovuto all'invecchiamento in legno","Colore rame/arancio derivante dalla macerazione sulle bucce","Colore bianco paglierino brillante","Colore rosa ottenuto con aggiunta di mosto rosso"], a:1, hint:"Il Pinot Grigio Ramato è una specialità friulana: la buccia grigiastra del Pinot Grigio, se macerata, cede un caratteristico colore ramato/ambrato.", cat:"Vinificazione" },
+    { id:217, q:"Il DOC Soave si produce in Veneto principalmente con quale vitigno?", opts:["Garganega (min. 70%) e Trebbiano di Soave","Pinot Grigio e Chardonnay","Corvina e Corvinone","Glera e Pinot Bianco"], a:0, hint:"La Garganega è il vitigno storico del Soave. Le versioni migliori provengono dalla zona classica sui Colli Soavesi.", cat:"Vitigni" },
+    { id:218, q:"Il Refosco dal Peduncolo Rosso è un vitigno autoctono tipico di:", opts:["Campania","Sardegna","Friuli Venezia Giulia","Calabria"], a:2, hint:"Il Refosco è uno dei principali vitigni rossi del Friuli Venezia Giulia, con una lunga storia nella regione.", cat:"Vitigni" },
+    { id:219, q:"Nell'analisi organolettica di un vino, la 'fase olfattiva' comprende la valutazione di:", opts:["Solo colore e limpidezza","Intensità, qualità, complessità e descrizione dei profumi","Solo la sensazione al palato","La temperatura e viscosità del vino"], a:1, hint:"L'esame olfattivo è fondamentale per il sommelier: si valutano intensità, qualità, complessità e si descrivono i profumi primari (frutto), secondari (fermentativi) e terziari (evoluzione).", cat:"Degustazione" },
+    { id:220, q:"Il Nero d'Avola, vitigno simbolo della Sicilia, produce vini rossi noti per:", opts:["Bassa gradazione alcolica e alta acidità","Elevata acidità e leggerezza","Ricchezza, morbidezza, alta concentrazione e note di frutta rossa e spezie","Essere esclusivamente da dessert"], a:2, hint:"Il Nero d'Avola è il re dei rossi siciliani: vini caldi, potenti, con sentori di ciliegia matura, cioccolato e spezie. Eccelle anche in blend con vitigni internazionali.", cat:"Vitigni" },
+    { id:221, q:"Il Fiano di Avellino DOCG è noto per quale caratteristica insolita per un vino bianco?", opts:["Bassa acidità e profumi neutri","Grande capacità di invecchiamento con sviluppo di note di noce e idrocarburi","Essere sempre frizzante","Gradazione alcolica molto bassa (~8%)"], a:1, hint:"Il Fiano di Avellino è uno dei rari bianchi italiani con capacità evolutiva decennale. Col tempo sviluppa note di idrocarburi, miele, zolfo e frutta secca.", cat:"Regioni" },
+    { id:222, q:"La tecnica del 'Ripasso' nel Veneto consiste in:", opts:["Fermentazione a temperatura molto bassa","Rifermentazione del Valpolicella sulle vinacce ancora umide dell'Amarone/Recioto","Aggiunta di mosto concentrato al vino base","Invecchiamento accelerato in botti piccole"], a:1, hint:"Il Valpolicella Ripasso acquista struttura, corpo e complessità dalla rifermentazione sulle vinacce dell'Amarone, risultando un vino 'a metà strada' tra Valpolicella e Amarone.", cat:"Vinificazione" },
+    { id:223, q:"Il Supertuscan Sassicaia ha ottenuto una denominazione esclusiva per un singolo produttore:", opts:["IGT Bolgheri Sassicaia","DOC Bolgheri Sassicaia","DOCG Maremma Toscana","Solo classificato come Vino da Tavola"], a:1, hint:"Il Sassicaia (Tenuta San Guido) è l'unico vino italiano ad avere una DOC riservata a un singolo produttore: la DOC Bolgheri Sassicaia, istituita nel 1994.", cat:"Legislazione" },
+    { id:224, q:"Nella spumantizzazione Metodo Classico, cosa producono i 'lieviti autolizzati' durante l'affinamento?", opts:["Residui da eliminare con la filtrazione","Complessità aromatica (crosta di pane, biscotto) e cremosità grazie alla scomposizione enzimatica","Aumento della gradazione alcolica","Note di volatile che rendono difettoso il vino"], a:1, hint:"L'autolisi è la degradazione enzimatica dei lieviti morti. I composti rilasciati (aminoacidi, polisaccaridi, mannoproteine) conferiscono il caratteristico profumo di crosta di pane e la struttura cremosa.", cat:"Spumanti" },
+    { id:225, q:"Il vitigno Gewürztraminer prende il nome dal comune di:", opts:["Gewürz in Germania","Tramin/Termeno in Alto Adige","Traminer in Alsazia","Gewürzig in Austria"], a:1, hint:"Il Gewürztraminer prende il nome da Tramin (Termeno sulla Strada del Vino), comune in Alto Adige. 'Gewürz' in tedesco significa 'speziato'. Produce vini intensamente aromatici.", cat:"Vitigni" },
+    { id:226, q:"Cosa distingue un vino definito 'orange wine' o 'vino arancione'?", opts:["Colore arancio da aggiunta di pigmenti naturali","Vino bianco vinificato con macerazione sulle bucce come un rosso, con colore ambrato e struttura tannica","Vino prodotto da uve arancione","Vino dolce con aggiunta di scorza d'arancia"], a:1, hint:"I vini arancioni sono bianchi vinificati 'in rosso': macerazione prolungata sulle bucce conferisce colore ambrato, tannini e complessità aromatica. Tradizione secolare in Georgia e Friuli (Josko Gravner, Radikon).", cat:"Vinificazione" },
+    { id:227, q:"Il disciplinare del Chianti Classico DOCG prevede un minimo di:", opts:["50% Sangiovese + blend obbligatorio con Cabernet","80% Sangiovese, con possibilità di completare con altri vitigni","100% Sangiovese obbligatorio in tutti i casi","Sangiovese 60% + Canaiolo 40%"], a:1, hint:"Il Chianti Classico DOCG prevede min. 80% Sangiovese. La Gran Selezione (dal 2014) deve essere 100% Sangiovese. La zona classica è tra Firenze e Siena (Gallo Nero).", cat:"Disciplinari" },
+    { id:228, q:"Cosa è la 'criomacerazione' nella vinificazione in bianco?", opts:["Fermentazione ad alta temperatura per estrarre colore","Raffreddamento del mosto a 5-8°C prima della fermentazione per estrarre aromi dalle bucce senza tannini","Aggiunta di ghiaccio per abbassare l'alcol","Congelamento delle uve prima della pigiatura"], a:1, hint:"La criomacerazione (macerazione a freddo) permette di estrarre composti aromatici terpenici dalle bucce a temperature basse, prima che i lieviti entrino in azione, senza estrarre tannini.", cat:"Vinificazione" },
+    { id:229, q:"Un vino con difetto di 'riduzione' presenta sentori di:", opts:["Aceto e smalto per unghie","Uovo marcio, bruciato, caucciù — dovuti a composti solforati in carenza di ossigeno","Cork taint — odore di muffa e cartone bagnato","Acido acetico in eccesso"], a:1, hint:"La riduzione è causata da composti solforati (H₂S, mercaptani) formati in assenza di ossigeno. Si può spesso risolvere con decantazione energica o swirling nel bicchiere.", cat:"Enologia" },
+    { id:230, q:"La Botrytis cinerea in condizioni favorevoli (muffa nobile) è responsabile di:", opts:["Vini difettosi da scartare","Grandi vini dolci come Sauternes, Tokaji Aszú e Trockenbeerenauslese","Vini liquorosi come il Porto","Vini effervescenti naturali come il Pétillant Naturel"], a:1, hint:"La 'muffa nobile' concentra gli zuccheri e aggiunge complessità aromatica (miele, zafferano, zenzero). Richiede umidità mattutina e pomeriggi asciutti per non diventare muffa grigia.", cat:"Enologia" },
+    { id:231, q:"Il Dolcetto piemontese (malgrado il nome) produce vini:", opts:["Dolci e alcolici","Secchi, con tannini morbidi, bassa acidità e colore violaceo intenso","Spumanti naturali","Sempre da invecchiamento lungo"], a:1, hint:"Il Dolcetto è un vino rosso secco, non dolce. Il nome probabilmente deriva da 'dulcis' (facile da bere). Ha colore intenso, fruttato, tannino morbido e prontissima beva.", cat:"Vitigni" },
+    { id:232, q:"Il Vermentino di Gallura DOCG è l'unica DOCG della Sardegna per i vini bianchi. Cosa la caratterizza?", opts:["Vitigno internazionale introdotto nel XX secolo","Vini bianchi strutturati con note agrumate, erbacee e marine dal terroir granitico della Gallura","Esclusivamente vini dolci","Produzione nel Sud dell'isola"], a:1, hint:"Il Vermentino di Gallura è prodotto nel nord-est della Sardegna su suoli granitici. La DOCG (dal 1996) produce bianchi secchi di ottima struttura con note di agrumi, ginestra e macchia mediterranea.", cat:"Regioni" },
+    { id:233, q:"Il Greco di Tufo DOCG è un bianco campano di probabile origine:", opts:["Spagnola, introdotto nel XVIII secolo","Greca, portato dai coloni della Magna Grecia","Francese, importato nel XIX secolo","Autoctona campana senza legami con altri paesi"], a:1, hint:"Il Greco di Tufo è considerato uno dei vitigni più antichi d'Italia, introdotto probabilmente dai coloni greci nella Magna Grecia (VIII-VII sec. a.C.). Il nome 'di Tufo' indica la varietà e il comune di Tufo (AV).", cat:"Vitigni" },
+    { id:234, q:"Cosa distingue il Cartizze dagli altri Prosecco DOCG di Valdobbiadene?", opts:["È prodotto con metodo Classico","È un singolo cru di soli 107 ettari su una collina di Valdobbiadene, il Grand Cru del Prosecco","È sempre un Prosecco secco (Brut)","È invecchiato in barrique di rovere francese"], a:1, hint:"Il Superiore di Cartizze DOCG è il Grand Cru del Prosecco: una sola collina di 107 ettari a Valdobbiadene, divisa tra circa 140 viticoltori. Produce Prosecco con maggiore dolcezza e complessità.", cat:"Disciplinari" },
+    { id:235, q:"Cosa si intende per viticoltura 'biodinamica' (certificazione Demeter)?", opts:["Solo uso di fertilizzanti organici","Approccio olistico alla vigna: preparati biodinamici, calendario lunare, la vigna come organismo vivo nel cosmo (R. Steiner)","Vino senza solfiti aggiunti","Solo vitigni autoctoni locali"], a:1, hint:"La biodinamica, sviluppata da Rudolf Steiner negli anni '20, è un'agricoltura olistica che usa preparati specifici (corno letame n°500, corno silice n°501) e il calendario lunare per tutte le operazioni in cantina e in vigna.", cat:"Enologia" },
+    { id:236, q:"Il Refosco dal Peduncolo Rosso è un vitigno autoctono storico di:", opts:["Campania","Sardegna","Friuli Venezia Giulia","Calabria"], a:2, hint:"Il Refosco dal Peduncolo Rosso è uno dei principali vitigni rossi del Friuli Venezia Giulia. Il nome si riferisce al peduncolo (picciolo) rosso che caratterizza il grappolo maturo.", cat:"Vitigni" },
+    { id:237, q:"Il Brunello di Montalcino DOCG richiede nel disciplinare:", opts:["Uvaggio obbligatorio con almeno 3 vitigni","100% Sangiovese con invecchiamento minimo 5 anni (6 per la Riserva)","Minimo 50% Sangiovese + vitigni internazionali","10 anni minimi di invecchiamento"], a:1, hint:"Il Brunello è uno dei vini italiani più puri: solo Sangiovese (localmente chiamato Brunello), almeno 5 anni di invecchiamento totale (6 per la Riserva), di cui 2 anni in botti di rovere.", cat:"Disciplinari" },
+    { id:238, q:"Cosa contraddistingue un 'Ramato' nel Friuli Venezia Giulia?", opts:["Vino rosso invecchiato in legno 10 anni","Pinot Grigio vinificato con macerazione sulle bucce che cede un colore rame/ambrato","Bianco da uve Ramato (vitigno autoctono)","Vino passito da uve Ramato"], a:1, hint:"Il Ramato è una specialità friulana: la buccia grigio-rosata del Pinot Grigio, se macerata, cede un caratteristico colore ramato. Fu la vinificazione tradizionale in Friuli prima che si diffondesse lo stile bianco 'pulito'.", cat:"Vinificazione" },
+    { id:239, q:"Il sistema di classificazione Supertuscan nacque perché alcuni produttori toscani:", opts:["Volevano creare una nuova DOCG","Usavano vitigni internazionali (Cabernet, Merlot) non previsti dai disciplinari storici, classificando il vino come IGT","Producevano fuori dalla zona delimitata","Erano in disaccordo con le quote di produzione"], a:1, hint:"Produttori come Antinori (Tignanello, 1971) e Incisa della Rocchetta (Sassicaia, 1968) volevano usare Cabernet Sauvignon e Merlot, esclusi dai disciplinari Chianti. Classificarono i vini come 'Vino da Tavola' prima, poi IGT.", cat:"Legislazione" },
+    { id:240, q:"Il Sagrantino di Montefalco DOCG è noto per avere:", opts:["Il contenuto tannico tra i più bassi dei vini italiani","Uno dei più alti contenuti tannici tra i vini italiani e una longevità eccezionale","Una gradazione alcolica molto bassa (7-8%)","Essere esclusivamente uno spumante locale"], a:1, hint:"Il Sagrantino ha un contenuto di tannini tra i più alti al mondo. Le uve producono vini che necessitano di lungo invecchiamento per ammorbidirsi. La versione Passito era originariamente riservata alle cerimonie religiose.", cat:"Regioni" },
+  ],
+  3: [ // SOMMELIER
+    { id:301, q:"In quale sotto-zona della Côte d'Or borgognona si trovano i Grand Cru Chambertin e Clos de Vougeot?", opts:["Côte de Beaune","Mâconnais","Côte de Nuits","Chablis"], a:2, hint:"La Côte de Nuits ospita i Grand Cru di Pinot Nero più famosi al mondo: Chambertin, Romanée-Conti, Clos de Vougeot, Richebourg.", cat:"Enografia" },
+    { id:302, q:"Quale è il vitigno principale alla base del Tokaji Aszú ungherese?", opts:["Welschriesling","Hárslevelű","Furmint","Kékfrankos"], a:2, hint:"Il Furmint è il vitigno principe del Tokaj. È particolarmente suscettibile alla Botrytis cinerea che crea le uve botritizzate base dell'Aszú.", cat:"Enografia" },
+    { id:303, q:"Qual è l'invecchiamento minimo totale per un Barolo Riserva DOCG?", opts:["3 anni","4 anni","62 mesi totali (di cui 18 in legno)","7 anni"], a:2, hint:"Il Barolo Riserva richiede almeno 62 mesi totali di invecchiamento, di cui almeno 18 mesi in botti di rovere. Un vino di eccezionale longevità.", cat:"Disciplinari" },
+    { id:304, q:"Pomerol è una famosa denominazione di Bordeaux. Quale vitigno domina il Petrus?", opts:["Cabernet Sauvignon","Cabernet Franc","Merlot","Malbec"], a:2, hint:"Pomerol, sulla riva destra della Gironda, è dominata dal Merlot. Il Petrus è quasi 100% Merlot su un rarissimo suolo argilloso.", cat:"Enografia" },
+    { id:305, q:"Cosa indica la dicitura 'Grosses Gewächs' (GG) sui vini tedeschi VDP?", opts:["Un vino con alto residuo zuccherino","Il vino base dell'annata","Un vino secco da vigneto classificato Grand Cru (VDP.Grosse Lage)","Un vino con almeno 15% di alcol"], a:2, hint:"Grosses Gewächs (GG) indica il vino più importante di un produttore VDP, proveniente da un vigneto classificato di primo livello. Deve essere secco.", cat:"Enografia" },
+    { id:306, q:"Il Fino è un tipo di Sherry prodotto a Jerez. Come avviene la sua maturazione?", opts:["In botti di rovere francese con ossidazione controllata","Sotto uno strato di lieviti vivi chiamato 'flor'","In grandi botti di castagno","In vasche di acciaio inox senza ossigeno"], a:1, hint:"Il Fino e il Manzanilla maturano biologicamente sotto la 'flor', uno strato di lieviti che protegge il vino dall'ossidazione, conferendogli caratteristiche uniche di mandorla e iodio.", cat:"Enografia" },
+    { id:307, q:"Un Champagne 'Millésimé' (Vintage) differisce da un Non-Vintage perché:", opts:["Usa solo uve Chardonnay","È prodotto con uve di un singolo anno eccezionale senza assemblaggio di annate diverse","Costa sempre meno del Non-Vintage","Non richiede dégorgement"], a:1, hint:"Il Non-Vintage è la norma in Champagne: si assemblano vini di più annate per coerenza di stile. Il Millésimé viene dichiarato solo in anni eccezionali (circa 3-4 per decennio).", cat:"Spumanti" },
+    { id:308, q:"Il Gewürztraminer eccelle anche in quale importante regione francese, oltre all'Alto Adige?", opts:["Borgogna","Alsazia","Bordeaux","Rodano"], a:1, hint:"Il Gewürztraminer dell'Alsazia è considerato tra i più grandi del mondo, con profumi intensi di rosa, litchi e spezie. Produce Vendanges Tardives e Sélections de Grains Nobles straordinari.", cat:"Enografia" },
+    { id:309, q:"Il Pinotage è il vitigno simbolo del Sudafrica. Da quali incroci deriva?", opts:["Cabernet Sauvignon x Merlot","Pinot Noir x Cinsault","Syrah x Grenache","Zinfandel x Primitivo"], a:1, hint:"Il Pinotage fu creato nel 1925 dal professor Abraham Perold all'Università di Stellenbosch, incrociando Pinot Noir e Hermitage (nome sudafricano del Cinsault).", cat:"Vitigni" },
+    { id:310, q:"Il Carmenère, creduto estinto in Europa dopo la fillossera, fu ritrovato e rivalutato in:", opts:["California","Argentina","Cile","Australia"], a:2, hint:"Per decenni in Cile il Carmenère fu scambiato per Merlot. Nel 1994, l'ampelografo Jean-Michel Boursiquot lo identificò correttamente come Carmenère.", cat:"Vitigni" },
+    { id:311, q:"Cosa è il 'dosage' (liqueur d'expédition) nel processo produttivo dello Champagne?", opts:["Il processo di scuotimento (remuage)","L'aggiunta di uno sciroppo di zucchero dopo il dégorgement per definire lo stile","La pressatura delle uve","L'aggiunta di lieviti per la seconda fermentazione"], a:1, hint:"Dopo il dégorgement (rimozione del sedimento), si aggiunge la liqueur d'expédition che determina se lo Champagne sarà Brut Nature, Extra Brut, Brut, Extra Dry, Sec, Demi-sec, Doux.", cat:"Spumanti" },
+    { id:312, q:"L'Assyrtiko è il vitigno bianco principe di quale isola greca?", opts:["Creta","Rodi","Santorini","Corfù"], a:2, hint:"L'Assyrtiko di Santorini è uno dei bianchi greci più rinomati al mondo. Cresce su viti pre-fillossera in forma di 'kouloura' (cesto) per proteggersi dal vento delle Cicladi.", cat:"Enografia" },
+    { id:313, q:"Il sistema Solera, usato per lo Sherry e alcuni vini speciali, consiste in:", opts:["Un metodo di vinificazione in bianco","Un sistema di invecchiamento progressivo dove il vino scorre da botti giovani a botti più vecchie","Un tipo di botte tradizionale spagnola","Una tecnica di chiarifica tradizionale andalusa"], a:1, hint:"Nel sistema Solera, le botti sono disposte in file sovrapposte ('criaderas'). Si preleva dalla Solera (il vino più vecchio) e si reintegra gradualmente con vino più giovane dall'alto.", cat:"Enografia" },
+    { id:314, q:"Il Verdejo è il vitigno bianco protagonista nella DO spagnola:", opts:["Rías Baixas","Rueda","Ribera del Duero","Priorat"], a:1, hint:"La DO Rueda, in Castiglia-León, è la denominazione spagnola che ha fatto riscoprire il Verdejo. Produce bianchi freschi e aromatici di grande piacevolezza.", cat:"Enografia" },
+    { id:315, q:"Il Grüner Veltliner è il vitigno bianco più coltivato in:", opts:["Germania","Slovenia","Austria","Ungheria"], a:2, hint:"Il Grüner Veltliner occupa circa il 30% della superficie viticola austriaca. Gli Smaragd della Wachau sono i più pregiati.", cat:"Enografia" },
+    { id:316, q:"La storica classificazione del 1855 a Bordeaux riguardava i Châteaux di:", opts:["Riva destra (Saint-Émilion, Pomerol)","Riva sinistra (Médoc) e i vini dolci di Sauternes","Entrambe le rive","Solo Pomerol e Saint-Émilion"], a:1, hint:"La classificazione del 1855 fu creata per l'Esposizione Universale di Parigi su richiesta di Napoleone III. Classificò i grandi rossi del Médoc e i vini dolci di Sauternes.", cat:"Enografia" },
+    { id:317, q:"Il Vinho Verde portoghese è caratterizzato principalmente da:", opts:["Essere un vino rosso giovane e tannico","Essere un bianco leggero, fresco, con bassa gradazione e leggera effervescenza naturale","Essere un vino da dessert molto dolce","Essere un vino ossidato in stile Sherry"], a:1, hint:"Il Vinho Verde ('vino verde' nel senso di giovane) viene dalla regione Minho nel nord del Portogallo. Il vitigno Alvarinho (= Albariño in Spagna) produce le versioni più prestigiose.", cat:"Enografia" },
+    { id:318, q:"Nella Rioja spagnola, un vino 'Reserva' richiede un invecchiamento minimo di:", opts:["1 anno totale","2 anni totali (6 mesi in rovere)","3 anni totali (1 anno in rovere)","5 anni totali"], a:2, hint:"Nella Rioja DOCa: Crianza = min. 2 anni (6 mesi rovere); Reserva = min. 3 anni (1 anno rovere); Gran Reserva = min. 5 anni (18 mesi rovere).", cat:"Disciplinari" },
+    { id:319, q:"In quale anno fu fondata l'AIS (Associazione Italiana Sommelier), la principale associazione di formazione in Italia?", opts:["1948","1965","1971","1983"], a:1, hint:"L'AIS fu fondata nel 1965 a Milano da un gruppo di professionisti della ristorazione e dell'hotellerie. Oggi conta oltre 40.000 soci.", cat:"Storia" },
+    { id:320, q:"La zona del Priorat (DOQ Priorat) è famosa per i suoi vini rossi di grande concentrazione. In quale regione spagnola si trova?", opts:["Castiglia-León","Galizia","Catalogna","Andalusia"], a:2, hint:"Il Priorat è una piccola zona montuosa in Catalogna (Tarragona) nota per i suoi suoli di 'llicorella' (ardesia nera) che producono vini di straordinaria concentrazione minerale.", cat:"Enografia" },
+    { id:321, q:"La Romanée-Conti Grand Cru in Borgogna è un monopole del DRC. Qual è la sua superficie?", opts:["1,8 ettari","5,5 ettari","15 ettari","0,5 ettari"], a:0, hint:"La Romanée-Conti è uno dei vigneti più piccoli e preziosi al mondo: 1,8 ettari nel comune di Vosne-Romanée. Produce circa 5.000-7.000 bottiglie l'anno, tra i più costosi al mondo.", cat:"Enografia" },
+    { id:322, q:"Moulin-à-Vent è considerato il Cru Beaujolais più strutturato e longevo. Il vitigno è:", opts:["Pinot Noir","Gamay","Syrah","Chardonnay"], a:1, hint:"Il Beaujolais è quasi esclusivamente Gamay. I 10 Crus (Brouilly, Chénas, Chiroubles, Fleurie, Juliénas, Morgon, Moulin-à-Vent, Régnié, Saint-Amour, Côte de Brouilly) sono tutti Gamay.", cat:"Enografia" },
+    { id:323, q:"Nel sistema VDP tedesco, qual è la corretta gerarchia qualitativa in ordine crescente?", opts:["Grosse Lage → Ortswein → Gutswein","Gutswein → Ortswein → Erste Lage → Grosse Lage","Première → Deuxième → Grand Cru","Kabinett → Spätlese → Auslese → Beerenauslese"], a:1, hint:"La piramide VDP dal basso: Gutswein (regionale), Ortswein (comunale), Erste Lage (premier cru), Grosse Lage (grand cru). Il Grosses Gewächs (GG) è il vino secco da un vigneto Grosse Lage.", cat:"Enografia" },
+    { id:324, q:"A Pomerol (Bordeaux riva destra) il Petrus è quasi interamente basato su:", opts:["Cabernet Sauvignon","Cabernet Franc","Merlot","Malbec"], a:2, hint:"Pomerol, sulla riva destra della Gironda, è dominata dal Merlot. Il Petrus (Moueix) è quasi 100% Merlot su un raro suolo argilloso blu, che mantiene l'umidità ideale.", cat:"Enografia" },
+    { id:325, q:"Il Fino e il Manzanilla (Sherry) maturano biologicamente sotto:", opts:["Uno strato di paraffina","La 'flor': uno strato protettivo di lieviti vivi che impedisce l'ossidazione","Botti di rovere tostato","Un sistema di refrigerazione continua"], a:1, hint:"La 'flor' è uno strato di lieviti Saccharomyces che si forma sulla superficie del vino, consumando acetaldeide e glicerolo. Protegge dall'ossidazione conferendo le caratteristiche note di mandorla e iodio.", cat:"Enografia" },
+    { id:326, q:"Il Malbec argentino della DO Mendoza ha origine storica in:", opts:["Spagna (Rioja)","Portogallo (Douro)","Francia (Cahors e Bordeaux)","Italia (Puglia)"], a:2, hint:"Il Malbec (Côt, Auxerrois) è originario della Francia: era dominante a Cahors e uno dei 6 vitigni ammessi a Bordeaux. Arrivò in Argentina intorno al 1850 grazie al ministro dell'Agricoltura Domingo Faustino Sarmiento.", cat:"Enografia" },
+    { id:327, q:"Il Tempranillo nella DO Ribera del Duero è chiamato localmente:", opts:["Garnacha","Tinto del País / Tinto Fino","Mencía","Monastrell"], a:1, hint:"Il Tempranillo cambia nome in tutta la Spagna: Tinto del País/Tinto Fino in Ribera del Duero, Ull de Llebre in Catalogna, Cencibel in La Mancha. È lo stesso vitigno con identità locale.", cat:"Enografia" },
+    { id:328, q:"La regione vinicola di Stellenbosch, famosa per i suoi Cabernet Sauvignon, si trova in:", opts:["Australia (Victoria)","Cile (Colchagua)","Argentina (Luján de Cuyo)","Sudafrica (Western Cape)"], a:3, hint:"Stellenbosch è nella provincia del Western Cape in Sudafrica, a est di Città del Capo. Il clima mediterraneo fresco è ideale per Cabernet Sauvignon, Syrah e Pinotage.", cat:"Enografia" },
+    { id:329, q:"Il Clare Valley e l'Eden Valley (South Australia) eccellono in quale vitigno bianco?", opts:["Chardonnay","Sauvignon Blanc","Riesling","Viognier"], a:2, hint:"Il Riesling australiano del Clare e Eden Valley è tra i più rispettati al mondo: stile secco, minerale e longevo, spesso imbottigliato con tappo a vite (Stelvin). Sviluppa note petrolifere con l'invecchiamento.", cat:"Enografia" },
+    { id:330, q:"Il Condrieu è una AOC del Rodano settentrionale prodotta esclusivamente con:", opts:["Syrah","Grenache Blanc","Viognier","Marsanne"], a:2, hint:"Il Condrieu è uno dei bianchi più opulenti del Rodano: Viognier in purezza con profumi intensi di albicocca, pesca, fiori bianchi e violetta. Château Grillet è un monopole dentro l'AOC Condrieu.", cat:"Enografia" },
+    { id:331, q:"Il Riesling Trockenbeerenauslese (TBA) tedesco si produce da:", opts:["Uve ghiacciate raccolte a -7°C","Uve botritizzate e appassite, selezionate singolarmente acino per acino","Uve in surmaturazione senza Botrytis","Blend di più annate per compensare annate difficili"], a:1, hint:"Il TBA è la categoria più pregiata del vino tedesco: uve selezionate una ad una, completamente botritizzate e appassite con concentrazione zuccherina estrema. Prodotto solo in anni eccezionali, in quantità minime.", cat:"Enografia" },
+    { id:332, q:"Cosa indica la classificazione 'Premier Cru' in Borgogna?", opts:["Il vino di punta di ogni produttore borgognone","Vigneti al secondo livello qualitativo (sotto i Grand Cru) della gerarchia borgognona","I vigneti di proprietà dello Stato francese","Vini con gradazione >13%"], a:1, hint:"La gerarchia borgognona: Régionale → Village → Premier Cru (1er Cru) → Grand Cru. I Premier Cru sono vigneti importanti identificati per nome (es. Volnay Caillerets), ma non al vertice dei Grand Cru.", cat:"Enografia" },
+    { id:333, q:"Il Clos de Vougeot Grand Cru (51 ha) in Borgogna ha come caratteristica storica:", opts:["Di essere monopole di un solo produttore","Di avere oltre 80 proprietari diversi, residuo della parcellizzazione post-rivoluzione francese","Di produrre esclusivamente Chardonnay","Di essere l'unico Grand Cru al confine tra due villaggi"], a:1, hint:"I monasteri cistercensi costruirono il Clos de Vougeot nel XII secolo come proprietà unificata. La Rivoluzione Francese parcellizzò i beni ecclesiastici, creando l'attuale situazione di oltre 80 proprietari con qualità variabile.", cat:"Enografia" },
+    { id:334, q:"Il Manzanilla differisce dal Fino perché:", opts:["È sempre più dolce","È prodotto solo a Sanlúcar de Barrameda, dove la brezza atlantica crea una flor più sottile e conferisce una nota salina/iodata","È invecchiato in botti di castagno","Ha sempre gradazione >20%"], a:1, hint:"Sanlúcar de Barrameda è sul fiume Guadalquivir, aperta all'Atlantico. L'umidità marina mantiene una flor più sottile e il Manzanilla acquisisce una salinità e mineralità marine uniche rispetto ai Fino di Jerez.", cat:"Enografia" },
+    { id:335, q:"Un Champagne Millésimé (Vintage) differisce da un Non-Vintage (NV) perché:", opts:["Usa solo uve Chardonnay","È prodotto con uve di un unico anno eccezionale senza assemblaggio di annate diverse","Costa sempre meno del NV","Non richiede dégorgement"], a:1, hint:"Il NV di Champagne assembla vini di 3-5 annate per garantire coerenza di stile. Il Millésimé viene dichiarato solo in anni eccezionali (circa 3-4 per decennio) e riflette il carattere di quell'annata specifica.", cat:"Spumanti" },
+    { id:336, q:"Il Pinotage sudafricano fu creato nel 1925 dall'incrocio tra:", opts:["Cabernet Sauvignon e Merlot","Pinot Noir e Cinsault (chiamato Hermitage in Sudafrica)","Syrah e Grenache","Zinfandel e Primitivo"], a:1, hint:"Il professor Abraham Perold dell'Università di Stellenbosch incrociò Pinot Noir e Hermitage (Cinsault) nel 1925. Il Pinotage è l'unico vitigno 'nazionale' sudafricano.", cat:"Vitigni" },
+    { id:337, q:"Il Carmenère, 'scomparso' in Europa dopo la fillossera, fu identificato nel 1994 in:", opts:["California","Argentina","Cile","Australia"], a:2, hint:"Per decenni il Carmenère fu confuso con il Merlot nei vigneti cileni. Nel 1994 l'ampelografo francese Jean-Michel Boursiquot lo identificò correttamente. Oggi è il vitigno emblema del Cile.", cat:"Vitigni" },
+    { id:338, q:"L'Assyrtiko, vitigno bianco prefillossertico, eccelle nell'isola greca di:", opts:["Creta","Rodi","Santorini","Corfù"], a:2, hint:"L'Assyrtiko di Santorini è uno dei bianchi greci più pregiati al mondo. Cresce su viti pre-fillossera in forma di 'kouloura' (cesta) per proteggersi dal vento. Il suolo vulcanico conferisce una mineralità straordinaria.", cat:"Enografia" },
+    { id:339, q:"Il sistema Solera usato per lo Sherry funziona in questo modo:", opts:["Invecchiamento in una sola botte per molti anni","Sistema di invecchiamento progressivo: si preleva dalla botte più vecchia (Solera) e si reintegra con vino più giovane a scorrimento verso il basso","Blend di vini di una singola annata","Sistema di refrigerazione a cascata per i vini bianchi"], a:1, hint:"La Solera è l'insieme di criaderas (file di botti sovrapposte) dove il vino scorre gradualmente dalle botti giovani in alto verso le botti più vecchie in basso. Si preleva sempre dalla Solera (il livello più vecchio).", cat:"Enografia" },
+    { id:340, q:"Nella produzione dello Champagne Metodo Classico, il 'dégorgement' è:", opts:["Il processo di scuotimento graduale delle bottiglie (remuage)","La rimozione del tappo temporaneo per espellere il deposito di lieviti congelato nel collo della bottiglia","L'aggiunta di zucchero per la seconda fermentazione (tirage)","Il processo di filtraggio del vino base"], a:1, hint:"Il processo completo: tirage (zucchero+lieviti), prise de mousse (2a fermentazione), remuage (raccolta sedimento sul collo), dégorgement (espulsione del sedimento ghiacciato), dosage (aggiunta liqueur).", cat:"Spumanti" },
+  ]
+};
+
+/* ════════════════════════════════════════════
+   PRIZE LADDER CONFIG
+   ════════════════════════════════════════════ */
+const LADDERS = {
+  // Progressione identica a "Chi Vuol Essere Milionario?" (Gerry Scotti).
+  // Traguardi sicuri a Q5 e Q10 (indici 4 e 9), come nel programma TV.
+  //
+  // Livello 3 (Sommelier) = scala ESATTA del programma:
+  //   100→200→300→500→1.000🛡→2.000→4.000→8.000→16.000→32.000🛡→64.000→125.000→250.000→500.000→1.000.000
+  //
+  // Livelli 1 e 2 = stessa progressione scalata (÷10 e ÷2)
+  1: {
+    time: 30,
+    // Milionario ÷ 10 (max €100.000)
+    prizes: [10, 20, 30, 50, 100, 200, 400, 800, 1600, 3200, 6400, 12500, 25000, 50000, 100000],
+    safe: [4, 9], // Q5 = €100 | Q10 = €3.200
+    label: '🍇 Appassionato', topPrize: '€ 100.000'
+  },
+  2: {
+    time: 25,
+    // Milionario ÷ 2 (max €500.000)
+    prizes: [50, 100, 150, 250, 500, 1000, 2000, 4000, 8000, 16000, 32000, 62500, 125000, 250000, 500000],
+    safe: [4, 9], // Q5 = €500 | Q10 = €16.000
+    label: '🥂 Esperto', topPrize: '€ 500.000'
+  },
+  3: {
+    time: 20,
+    // Scala ESATTA di "Chi Vuol Essere Milionario?" (max €1.000.000)
+    prizes: [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000],
+    safe: [4, 9], // Q5 = €1.000 | Q10 = €32.000
+    label: '🏅 Sommelier', topPrize: '€ 1.000.000'
+  }
+};
+
+/* ════════════════════════════════════════════
+   GAME STATE
+   ════════════════════════════════════════════ */
+let state = {
+  level: 1, qIdx: 0,
+  questions: [], safeScore: 0,
+  lifelines: { f50: true, hint: true, audience: true, change: true },
+  answered: false, timer: null, timeLeft: 30,
+  lastScreen: 's-levels'
+};
+
+function getUnlocked() {
+  return JSON.parse(localStorage.getItem('cwes_unlocked') || '[1]');
+}
+function setUnlocked(arr) {
+  localStorage.setItem('cwes_unlocked', JSON.stringify(arr));
+}
+
+/* ════════════════════════════════════════════
+   SCREEN MANAGEMENT
+   ════════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id !== 's-ladder') state.lastScreen = id;
+}
+function showLastGame() {
+  if (pcTimer) { clearTimeout(pcTimer); pcTimer = null; }
+  showScreen('s-game');
+}
+
+/* ════════════════════════════════════════════
+   LEVEL LOGIC
+   ════════════════════════════════════════════ */
+function tryLevel(lv) {
+  const unlocked = getUnlocked();
+  if (unlocked.includes(lv)) { startLevel(lv); }
+  else { showPaywall(lv); }
+}
+function showPaywall(lv) {
+  document.getElementById('pw-icon').textContent = lv === 2 ? '🥂' : lv === 3 ? '🏅' : '🔓';
+  document.getElementById('pw-title').textContent = lv === 2 ? 'Sblocca il Livello Esperto' : lv === 3 ? 'Sblocca il Livello Sommelier' : 'Scegli il tuo prossimo livello';
+  showScreen('s-paywall');
+}
+function updateLevelCards() {
+  const unlocked = getUnlocked();
+  [2, 3].forEach(lv => {
+    const card = document.getElementById(`lv-card-${lv}`);
+    const lock = document.getElementById(`lock-${lv}`);
+    if (unlocked.includes(lv)) {
+      card.classList.remove('locked');
+      card.classList.add('free');
+      if (lock) lock.style.display = 'none';
+    } else {
+      card.classList.add('locked');
+      card.classList.remove('free');
+      if (lock) lock.style.display = '';
+    }
+  });
+}
+function purchase(what) {
+  const unlocked = getUnlocked();
+  let msg = '';
+  if (what === 2) { if (!unlocked.includes(2)) unlocked.push(2); msg = '🥂 Livello Esperto sbloccato! Buona fortuna!'; }
+  else if (what === 3) { if (!unlocked.includes(3)) unlocked.push(3); msg = '🏅 Livello Sommelier sbloccato! Sei pronto per la sfida?'; }
+  else if (what === 'bundle') { if (!unlocked.includes(2)) unlocked.push(2); if (!unlocked.includes(3)) unlocked.push(3); msg = '🍷 Bundle completo sbloccato! Esperto + Sommelier sono tuoi!'; }
+  setUnlocked(unlocked);
+  document.getElementById('modal-purchase-text').textContent = msg;
+  document.getElementById('modal-purchase-ok').classList.add('open');
+}
+function restoreAll() {
+  const unlocked = getUnlocked();
+  showToast(unlocked.length > 1 ? '✓ Acquisti ripristinati: ' + unlocked.length + ' livelli attivi' : 'Nessun acquisto precedente trovato');
+}
+
+/* ════════════════════════════════════════════
+   GAME START
+   ════════════════════════════════════════════ */
+function startLevel(lv) {
+  state.level = lv;
+  state.qIdx = 0;
+  state.safeScore = 0;
+  state.lifelines = { f50: true, hint: true, audience: true, change: true };
+  state.answered = false;
+  // Fisher-Yates shuffle (corretto) e prendi 15 domande
+  const allQ = [...DB[lv]];
+  for (let i = allQ.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [allQ[i], allQ[j]] = [allQ[j], allQ[i]];
+  }
+  const pool = allQ.slice(0, 15);
+  state.questions = pool;
+
+  const cfg = LADDERS[lv];
+  state.timeLeft = cfg.time;
+
+  // update UI chrome
+  document.getElementById('g-lvpill').textContent = cfg.label;
+  document.getElementById('g-score').textContent = '€ 0';
+  resetLifelines();
+  buildDots();
+  buildLadder();
+  showScreen('s-game');
+  loadQuestion();
+}
+
+function buildDots() {
+  const el = document.getElementById('prog-dots');
+  el.innerHTML = '';
+  for (let i = 0; i < 15; i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i === 0 ? ' current' : '');
+    d.id = `dot-${i}`;
+    el.appendChild(d);
+  }
+}
+function updateDots() {
+  for (let i = 0; i < 15; i++) {
+    const d = document.getElementById(`dot-${i}`);
+    if (!d) continue;
+    d.className = 'pdot' + (i < state.qIdx ? ' done' : i === state.qIdx ? ' current' : '');
+  }
+}
+
+/* ════════════════════════════════════════════
+   QUESTION RENDERING
+   ════════════════════════════════════════════ */
+function loadQuestion() {
+  if (state.timer) clearInterval(state.timer);
+  state.answered = false;
+  const q = state.questions[state.qIdx];
+  const cfg = LADDERS[state.level];
+
+  document.getElementById('q-num').textContent = `Domanda ${state.qIdx + 1} di 15`;
+  document.getElementById('q-text').textContent = q.q;
+  updateDots();
+
+  // Score
+  const prize = state.qIdx > 0 ? cfg.prizes[state.qIdx - 1] : 0;
+  document.getElementById('g-score').textContent = '€ ' + (prize > 0 ? formatNum(prize) : '0');
+
+  // Answers
+  const ans = document.getElementById('answers');
+  ans.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.opts.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'ans';
+    div.id = `ans-${i}`;
+    div.innerHTML = `<div class="ans-letter">${letters[i]}</div><div class="ans-text">${opt}</div>`;
+    div.onclick = () => selectAnswer(i);
+    ans.appendChild(div);
+  });
+
+  // Timer
+  state.timeLeft = cfg.time;
+  updateTimer(state.timeLeft, cfg.time);
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+    updateTimer(state.timeLeft, cfg.time);
+    if (state.timeLeft <= 5) document.getElementById('timer-arc').style.stroke = '#E53935';
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      if (!state.answered) timeOut();
+    }
+  }, 1000);
+}
+
+function updateTimer(t, max) {
+  document.getElementById('timer-num').textContent = t;
+  const arc = document.getElementById('timer-arc');
+  const circ = 100.5;
+  arc.style.strokeDashoffset = circ - (circ * t / max);
+  if (t > 10) arc.style.stroke = 'var(--gold-b)';
+  else if (t > 5) arc.style.stroke = '#FFA500';
+  else arc.style.stroke = 'var(--red)';
+}
+
+/* ════════════════════════════════════════════
+   ANSWER LOGIC
+   ════════════════════════════════════════════ */
+function selectAnswer(idx) {
+  if (state.answered) return;
+  state.answered = true;
+  clearInterval(state.timer);
+
+  const q = state.questions[state.qIdx];
+  const ans = document.getElementById(`ans-${idx}`);
+  ans.classList.add('selected');
+
+  // lock all
+  document.querySelectorAll('.ans').forEach(a => a.classList.add('locked-ans'));
+
+  // wait 800ms then reveal
+  setTimeout(() => {
+    if (idx === q.a) {
+      ans.classList.remove('selected');
+      ans.classList.add('correct');
+      playTone('correct');
+      const cfg = LADDERS[state.level];
+      if (cfg.safe.includes(state.qIdx)) {
+        state.safeScore = cfg.prizes[state.qIdx];
+      }
+      setTimeout(() => {
+        showPrizeClimb(state.qIdx);
+      }, 1000);
+    } else {
+      ans.classList.remove('selected');
+      ans.classList.add('wrong');
+      document.getElementById(`ans-${q.a}`).classList.add('correct');
+      playTone('wrong');
+      setTimeout(() => gameOver(q, idx), 1800);
+    }
+  }, 800);
+}
+
+function timeOut() {
+  state.answered = true;
+  const q = state.questions[state.qIdx];
+  document.getElementById(`ans-${q.a}`).classList.add('correct');
+  document.querySelectorAll('.ans').forEach(a => a.classList.add('locked-ans'));
+  playTone('wrong');
+  setTimeout(() => gameOver(q, -1), 1800);
+}
+
+/* ════════════════════════════════════════════
+   PRIZE CLIMB
+   ════════════════════════════════════════════ */
+let pcTimer = null;
+
+function showPrizeClimb(qIdx) {
+  if (pcTimer) { clearTimeout(pcTimer); pcTimer = null; }
+  const cfg = LADDERS[state.level];
+  const prize = cfg.prizes[qIdx];
+  const isSafe = cfg.safe.includes(qIdx);
+
+  // header
+  document.getElementById('pc-prize-main').textContent = '€ ' + formatNum(prize);
+  const badge = document.getElementById('pc-safe-badge');
+  if (isSafe) { badge.classList.remove('hide'); }
+  else { badge.classList.add('hide'); }
+
+  // build ladder (top = highest prize)
+  const ladder = document.getElementById('pc-ladder');
+  ladder.innerHTML = '';
+  for (let i = 14; i >= 0; i--) {
+    const isCurr = (i === qIdx);
+    const isDone = (i < qIdx);
+    const isSafeRow = cfg.safe.includes(i);
+    const row = document.createElement('div');
+    row.id = 'pcrow-' + i;
+    row.className = 'pc-row ' +
+      (isCurr ? 'pc-current' :
+       isDone  ? 'pc-done' :
+       isSafeRow ? 'pc-safe-future' : 'pc-future');
+    row.innerHTML =
+      `<span class="pc-row-q">${isCurr ? '★' : (i+1)}</span>` +
+      `<span class="pc-row-label">${isSafeRow ? '🛡 Sicuro' : ''}</span>` +
+      `<span class="pc-row-prize">€ ${formatNum(cfg.prizes[i])}</span>` +
+      (isDone ? '<span class="pc-row-done">✓</span>' : '');
+    ladder.appendChild(row);
+  }
+
+  showScreen('s-prizeclimb');
+
+  // scroll current row into view after paint
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      const curr = document.getElementById('pcrow-' + qIdx);
+      if (curr) curr.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 80);
+  });
+
+  // progress bar animation
+  const bar = document.getElementById('pc-bar-fill');
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.transition = 'width 2.6s linear';
+      bar.style.width = '100%';
+    });
+  });
+
+  // auto-advance
+  pcTimer = setTimeout(() => proceedToNext(), 2800);
+}
+
+function proceedToNext() {
+  if (pcTimer) { clearTimeout(pcTimer); pcTimer = null; }
+  state.qIdx++;
+  if (state.qIdx >= 15) { gameWin(); }
+  else { showScreen('s-game'); loadQuestion(); }
+}
+
+/* ════════════════════════════════════════════
+   WIN / GAME OVER
+   ════════════════════════════════════════════ */
+function gameWin() {
+  clearInterval(state.timer);
+  const cfg = LADDERS[state.level];
+  document.getElementById('win-prize').textContent = '€ ' + formatNum(cfg.prizes[14]);
+  document.getElementById('win-sub').textContent = `Hai completato il livello ${cfg.label} con tutte le risposte corrette!`;
+  showScreen('s-win');
+}
+
+function gameOver(q, idx) {
+  clearInterval(state.timer);
+  document.getElementById('go-wrong-text').textContent =
+    idx === -1 ? 'Tempo scaduto! La risposta corretta era:' : `Hai risposto "${q.opts[idx]}". La risposta corretta era:`;
+  document.getElementById('go-correct-ans').textContent = q.opts[q.a];
+  const safe = state.safeScore;
+  document.getElementById('go-safe').innerHTML = safe > 0
+    ? `Traguardo sicuro raggiunto! Porti a casa: <strong>€ ${formatNum(safe)}</strong>`
+    : `Nessun traguardo sicuro raggiunto. Porti a casa: <strong>€ 0</strong>`;
+  showScreen('s-gameover');
+}
+
+function restartSameLevel() { startLevel(state.level); }
+
+/* ════════════════════════════════════════════
+   LIFELINES
+   ════════════════════════════════════════════ */
+function resetLifelines() {
+  ['ll-5050','ll-hint','ll-audience','ll-change'].forEach(id => {
+    document.getElementById(id).classList.remove('used');
+  });
+}
+
+function use5050() {
+  if (!state.lifelines.f50 || state.answered) return;
+  state.lifelines.f50 = false;
+  document.getElementById('ll-5050').classList.add('used');
+  const q = state.questions[state.qIdx];
+  // remove 2 wrong answers (keep correct + 1 random wrong)
+  const wrongIdxs = [0,1,2,3].filter(i => i !== q.a);
+  // shuffle wrong, hide first 2
+  wrongIdxs.sort(() => Math.random() - .5);
+  wrongIdxs.slice(0, 2).forEach(i => {
+    document.getElementById(`ans-${i}`).classList.add('hidden');
+  });
+  showToast('50:50 usato — hai eliminato 2 risposte sbagliate!');
+}
+
+function useHint() {
+  if (!state.lifelines.hint || state.answered) return;
+  state.lifelines.hint = false;
+  document.getElementById('ll-hint').classList.add('used');
+  const q = state.questions[state.qIdx];
+  document.getElementById('modal-hint-text').textContent = `"${q.hint}"`;
+  document.getElementById('modal-hint').classList.add('open');
+}
+
+function useAudience() {
+  if (!state.lifelines.audience || state.answered) return;
+  state.lifelines.audience = false;
+  document.getElementById('ll-audience').classList.add('used');
+  const q = state.questions[state.qIdx];
+  const letters = ['A','B','C','D'];
+  // Only consider visible answers (in case 50:50 was already used)
+  const visibleIdxs = [0,1,2,3].filter(i =>
+    !document.getElementById(`ans-${i}`)?.classList.contains('hidden')
+  );
+  const correctPosInVisible = visibleIdxs.indexOf(q.a);
+  const pcts = generateAudiencePcts(correctPosInVisible, visibleIdxs.length);
+  const bars = document.getElementById('audience-bars');
+  bars.innerHTML = '';
+  visibleIdxs.forEach((origIdx, visIdx) => {
+    const row = document.createElement('div');
+    row.className = 'a-bar-row';
+    row.innerHTML = `<span class="a-bar-label">${letters[origIdx]}</span>
+      <div class="a-bar-track"><div class="a-bar-fill" id="abar-${origIdx}"></div><span class="a-bar-pct">${pcts[visIdx]}%</span></div>`;
+    bars.appendChild(row);
+  });
+  document.getElementById('modal-audience').classList.add('open');
+  setTimeout(() => {
+    visibleIdxs.forEach((origIdx, visIdx) => {
+      const el = document.getElementById(`abar-${origIdx}`);
+      if (el) el.style.width = pcts[visIdx] + '%';
+    });
+  }, 100);
+}
+
+function generateAudiencePcts(correctIdx, n) {
+  // correct answer gets 45-75%, rest split remaining
+  const correctPct = 45 + Math.floor(Math.random() * 31);
+  const remaining = 100 - correctPct;
+  const others = [];
+  let sum = 0;
+  for (let i = 0; i < n - 1; i++) {
+    const v = i < n - 2 ? Math.floor(Math.random() * (remaining - sum - (n - 2 - i))) : remaining - sum;
+    others.push(Math.max(0, v));
+    sum += others[others.length - 1];
+  }
+  others.sort(() => Math.random() - .5);
+  const result = [];
+  let oi = 0;
+  for (let i = 0; i < n; i++) {
+    result.push(i === correctIdx ? correctPct : (others[oi++] || 0));
+  }
+  return result;
+}
+
+function useChange() {
+  if (!state.lifelines.change || state.answered) return;
+  state.lifelines.change = false;
+  document.getElementById('ll-change').classList.add('used');
+  // find a replacement question not already used
+  const pool = DB[state.level];
+  const usedIds = state.questions.map(q => q.id);
+  const available = pool.filter(q => !usedIds.includes(q.id));
+  if (available.length > 0) {
+    const replacement = available[Math.floor(Math.random() * available.length)];
+    state.questions[state.qIdx] = replacement;
+    loadQuestion();
+    showToast('Domanda cambiata!');
+  } else {
+    showToast('Nessuna domanda alternativa disponibile per questo livello.');
+    state.lifelines.change = true;
+    document.getElementById('ll-change').classList.remove('used');
+  }
+}
+
+/* ════════════════════════════════════════════
+   LADDER
+   ════════════════════════════════════════════ */
+function buildLadder() {
+  const cfg = LADDERS[state.level];
+  document.getElementById('ladder-title').textContent = cfg.label + ' — SCALA PREMI';
+  const list = document.getElementById('ladder-list');
+  list.innerHTML = '';
+  // build reversed (top = highest)
+  for (let i = 14; i >= 0; i--) {
+    const row = document.createElement('div');
+    const isSafe = cfg.safe.includes(i);
+    const isCurrent = i === state.qIdx && !document.getElementById('s-win')?.classList.contains('active');
+    const isDone = i < state.qIdx;
+    row.className = 'l-row' + (isSafe ? ' safe' : '') + (isCurrent ? ' current' : '') + (isDone ? ' done-row' : '');
+    row.innerHTML = `
+      <span class="l-q">${isCurrent ? '▶' : (i+1)}</span>
+      <span class="l-label">${isSafe ? '🛡 Traguardo Sicuro' : ''}</span>
+      <span class="l-prize">€ ${formatNum(cfg.prizes[i])}</span>
+      ${isDone ? '<span class="l-done">✓</span>' : ''}`;
+    list.appendChild(row);
+  }
+}
+
+/* ════════════════════════════════════════════
+   MODALS & TOAST
+   ════════════════════════════════════════════ */
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ════════════════════════════════════════════
+   AUDIO (Web Audio API)
+   ════════════════════════════════════════════ */
+function playTone(type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    if (type === 'correct') {
+      osc.frequency.setValueAtTime(660, ctx.currentTime);
+      osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5);
+    } else {
+      osc.frequency.setValueAtTime(300, ctx.currentTime);
+      osc.frequency.setValueAtTime(180, ctx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.6);
+    }
+  } catch(e) {}
+}
+
+/* ════════════════════════════════════════════
+   UTILS
+   ════════════════════════════════════════════ */
+function formatNum(n) {
+  return n >= 1000000 ? '1.000.000' : n.toLocaleString('it-IT');
+}
+
+/* ════════════════════════════════════════════
+   STARS (splash decoration)
+   ════════════════════════════════════════════ */
+(function initStars() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.7+0.1}`;
+    c.appendChild(s);
+  }
+})();
+
+/* ════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════ */
+updateLevelCards();
+</script>
+</body>
+</html>
