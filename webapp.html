@@ -312,7 +312,22 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
 
 /* ─── UTILS ─── */
 .mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
+
+/* ─── AUTH MODAL ─── */
+.auth-tabs{display:flex;border-bottom:1px solid rgba(212,175,55,.2);margin-bottom:18px}
+.auth-tab{flex:1;padding:10px;text-align:center;font-family:var(--fd);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.auth-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.auth-input{width:100%;padding:12px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.2);border-radius:10px;font-family:var(--fu);font-size:13px;color:#fff;margin-bottom:10px;outline:none;transition:border-color .2s}
+.auth-input:focus{border-color:var(--gold)}
+.auth-input::placeholder{color:rgba(255,255,255,.3)}
+.auth-error{font-family:var(--fu);font-size:11px;color:var(--red);text-align:center;min-height:14px;margin-bottom:8px;transition:color .2s}
+.auth-skip{text-align:center;margin-top:14px;font-family:var(--fu);font-size:11px;color:rgba(255,255,255,.3);cursor:pointer;letter-spacing:1px}
+.auth-skip:hover{color:rgba(255,255,255,.6)}
+.auth-close-x{position:absolute;top:12px;right:14px;font-size:18px;color:rgba(255,255,255,.35);cursor:pointer;line-height:1}
+.auth-close-x:hover{color:var(--gold)}
+.account-chip{font-family:var(--fu);font-size:10px;color:var(--gold);background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.25);border-radius:999px;padding:4px 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="app">
@@ -336,7 +351,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
   <div class="topbar">
     <div class="back-btn" onclick="showScreen('s-splash')">←</div>
     <span class="topbar-title">LIVELLI</span>
-    <div style="width:32px"></div>
+    <div class="account-chip" id="btn-account" onclick="onAccountClick()">👤 Accedi</div>
   </div>
   <p class="section-hint">Quanto conosci il vino?</p>
   <p class="section-sub">Scegli la tua sfida e conquista il titolo</p>
@@ -539,12 +554,158 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
   </div>
 </div>
 
+<!-- ═══ AUTH MODAL ═══ -->
+<div class="modal-overlay" id="modal-auth">
+  <div class="modal" style="position:relative;padding-top:18px">
+    <span class="auth-close-x" onclick="closeAuthModal()">✕</span>
+    <div class="modal-icon">🔐</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')">Accedi</div>
+      <div class="auth-tab" id="auth-tab-signup" onclick="switchAuthTab('signup')">Registrati</div>
+    </div>
+    <p class="auth-error" id="auth-error"></p>
+    <!-- Login -->
+    <div id="auth-form-login">
+      <input class="auth-input" id="login-email" type="email" placeholder="Email" autocomplete="email">
+      <input class="auth-input" id="login-pwd" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="modal-btn" id="btn-do-login" onclick="doLogin()">Accedi</button>
+    </div>
+    <!-- Signup -->
+    <div id="auth-form-signup" style="display:none">
+      <input class="auth-input" id="signup-email" type="email" placeholder="Email" autocomplete="email">
+      <input class="auth-input" id="signup-pwd" type="password" placeholder="Password (min 6 caratteri)" autocomplete="new-password">
+      <input class="auth-input" id="signup-pwd2" type="password" placeholder="Ripeti password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doSignup()">
+      <button class="modal-btn" id="btn-do-signup" onclick="doSignup()">Registrati</button>
+    </div>
+    <p class="auth-skip" onclick="closeAuthModal()">Continua senza account →</p>
+  </div>
+</div>
+
 <div id="toast">…</div>
 
 </div><!-- /phone -->
 </div><!-- /app -->
 
 <script>
+/* ════════════════════════════════════════════
+   SUPABASE — AUTH & PURCHASES
+   ════════════════════════════════════════════ */
+const SB_URL = 'https://qcrlcbbyanxoxdqelupa.supabase.co';
+const SB_KEY = 'sb_publishable_nhwSiR6kH931olain67Ksw__XiS4GEf';
+let sb = null;
+let sbUser = null;
+let sbPurchases = []; // livelli acquistati via DB [2, 3]
+let authPendingLevel = null;
+
+async function initSupabase() {
+  try {
+    sb = supabase.createClient(SB_URL, SB_KEY);
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) { sbUser = session.user; await loadSbPurchases(); }
+    sb.auth.onAuthStateChange(async (event, session) => {
+      sbUser = session?.user || null;
+      if (sbUser) await loadSbPurchases(); else sbPurchases = [];
+      updateLevelCards(); updateAuthUI();
+    });
+    updateAuthUI();
+  } catch(e) { console.warn('Supabase non disponibile:', e); }
+}
+
+async function loadSbPurchases() {
+  if (!sb || !sbUser) { sbPurchases = []; return; }
+  try {
+    const { data } = await sb.from('purchases').select('level');
+    sbPurchases = data ? data.map(p => p.level) : [];
+  } catch(e) { sbPurchases = []; }
+}
+
+function updateAuthUI() {
+  const btn = document.getElementById('btn-account');
+  if (!btn) return;
+  if (sbUser) {
+    const email = sbUser.email || '';
+    btn.textContent = '👤 ' + (email.length > 14 ? email.slice(0, 12) + '…' : email);
+  } else {
+    btn.textContent = '👤 Accedi';
+  }
+}
+
+function onAccountClick() {
+  if (sbUser) {
+    // Mostra opzione logout
+    if (confirm('Account: ' + sbUser.email + '\n\nVuoi disconnetterti?')) doLogout();
+  } else {
+    showAuthModal(null, 'login');
+  }
+}
+
+function showAuthModal(pendingLevel = null, mode = 'login') {
+  authPendingLevel = pendingLevel;
+  document.getElementById('auth-error').textContent = '';
+  switchAuthTab(mode);
+  document.getElementById('modal-auth').classList.add('open');
+}
+
+function closeAuthModal() {
+  document.getElementById('modal-auth').classList.remove('open');
+  authPendingLevel = null;
+}
+
+function switchAuthTab(mode) {
+  document.getElementById('auth-tab-login').classList.toggle('active', mode === 'login');
+  document.getElementById('auth-tab-signup').classList.toggle('active', mode === 'signup');
+  document.getElementById('auth-form-login').style.display = mode === 'login' ? '' : 'none';
+  document.getElementById('auth-form-signup').style.display = mode === 'signup' ? '' : 'none';
+  document.getElementById('auth-error').textContent = '';
+}
+
+function setAuthLoading(on) {
+  ['btn-do-login','btn-do-signup'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.disabled = on; el.textContent = on ? '...' : (id === 'btn-do-login' ? 'Accedi' : 'Registrati'); }
+  });
+}
+
+async function doLogin() {
+  if (!sb) { showToast('Servizio non disponibile'); return; }
+  const email = document.getElementById('login-email').value.trim();
+  const pwd = document.getElementById('login-pwd').value;
+  if (!email || !pwd) { document.getElementById('auth-error').textContent = 'Inserisci email e password.'; return; }
+  setAuthLoading(true);
+  const { error } = await sb.auth.signInWithPassword({ email, password: pwd });
+  setAuthLoading(false);
+  if (error) { document.getElementById('auth-error').textContent = error.message; return; }
+  closeAuthModal();
+  await loadSbPurchases(); updateLevelCards();
+  if (authPendingLevel) {
+    if (getUnlocked().includes(authPendingLevel)) startLevel(authPendingLevel);
+    else showPaywall(authPendingLevel);
+  }
+}
+
+async function doSignup() {
+  if (!sb) { showToast('Servizio non disponibile'); return; }
+  const email = document.getElementById('signup-email').value.trim();
+  const pwd = document.getElementById('signup-pwd').value;
+  const pwd2 = document.getElementById('signup-pwd2').value;
+  if (!email || !pwd) { document.getElementById('auth-error').textContent = 'Inserisci email e password.'; return; }
+  if (pwd !== pwd2) { document.getElementById('auth-error').textContent = 'Le password non coincidono.'; return; }
+  if (pwd.length < 6) { document.getElementById('auth-error').textContent = 'Password minimo 6 caratteri.'; return; }
+  setAuthLoading(true);
+  const { error } = await sb.auth.signUp({ email, password: pwd });
+  setAuthLoading(false);
+  if (error) { document.getElementById('auth-error').textContent = error.message; return; }
+  const el = document.getElementById('auth-error');
+  el.style.color = 'var(--gold)'; el.textContent = '✓ Controlla la tua email per confermare la registrazione.';
+}
+
+async function doLogout() {
+  if (!sb) return;
+  await sb.auth.signOut();
+  sbPurchases = []; updateLevelCards(); updateAuthUI();
+  showToast('Disconnesso');
+}
+
 /* ════════════════════════════════════════════
    QUESTIONS DATABASE
    ════════════════════════════════════════════ */
@@ -723,7 +884,8 @@ let state = {
 };
 
 function getUnlocked() {
-  return JSON.parse(localStorage.getItem('cwes_unlocked') || '[1]');
+  const local = JSON.parse(localStorage.getItem('cwes_unlocked') || '[1]');
+  return [...new Set([1, ...local, ...sbPurchases])];
 }
 function setUnlocked(arr) {
   localStorage.setItem('cwes_unlocked', JSON.stringify(arr));
@@ -751,6 +913,8 @@ function tryLevel(lv) {
   else { showPaywall(lv); }
 }
 function showPaywall(lv) {
+  // Richiede login prima di mostrare il pagamento
+  if (lv && !sbUser) { showAuthModal(lv, 'login'); return; }
   document.getElementById('pw-icon').textContent = lv === 2 ? '🥂' : lv === 3 ? '🏅' : '🔓';
   document.getElementById('pw-title').textContent = lv === 2 ? 'Sblocca il Livello Esperto' : lv === 3 ? 'Sblocca il Livello Sommelier' : 'Scegli il tuo prossimo livello';
   showScreen('s-paywall');
@@ -781,9 +945,13 @@ function purchase(what) {
   document.getElementById('modal-purchase-text').textContent = msg;
   document.getElementById('modal-purchase-ok').classList.add('open');
 }
-function restoreAll() {
-  const unlocked = getUnlocked();
-  showToast(unlocked.length > 1 ? '✓ Acquisti ripristinati: ' + unlocked.length + ' livelli attivi' : 'Nessun acquisto precedente trovato');
+async function restoreAll() {
+  if (!sbUser) { showAuthModal(null, 'login'); return; }
+  await loadSbPurchases();
+  updateLevelCards();
+  showToast(sbPurchases.length > 0
+    ? '✓ Ripristinati ' + sbPurchases.length + ' acquisti per ' + sbUser.email
+    : 'Nessun acquisto trovato per questo account');
 }
 
 /* ════════════════════════════════════════════
@@ -1221,6 +1389,7 @@ function formatNum(n) {
    INIT
    ════════════════════════════════════════════ */
 updateLevelCards();
+initSupabase();
 </script>
 </body>
 </html>
