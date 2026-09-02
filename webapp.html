@@ -935,15 +935,45 @@ function updateLevelCards() {
     }
   });
 }
+const STRIPE_LINKS = {
+  2:      'https://buy.stripe.com/4gMfZgePQ2ec330bjx2wU00',
+  3:      'https://buy.stripe.com/8x2bJ04bcf0Y3304V92wU01',
+  bundle: 'https://buy.stripe.com/9B67sK234f0YdHEfzN2wU02'
+};
+
 function purchase(what) {
-  const unlocked = getUnlocked();
-  let msg = '';
-  if (what === 2) { if (!unlocked.includes(2)) unlocked.push(2); msg = '🥂 Livello Esperto sbloccato! Buona fortuna!'; }
-  else if (what === 3) { if (!unlocked.includes(3)) unlocked.push(3); msg = '🏅 Livello Sommelier sbloccato! Sei pronto per la sfida?'; }
-  else if (what === 'bundle') { if (!unlocked.includes(2)) unlocked.push(2); if (!unlocked.includes(3)) unlocked.push(3); msg = '🍷 Bundle completo sbloccato! Esperto + Sommelier sono tuoi!'; }
-  setUnlocked(unlocked);
-  document.getElementById('modal-purchase-text').textContent = msg;
-  document.getElementById('modal-purchase-ok').classList.add('open');
+  if (!sbUser) { showAuthModal(what, 'login'); return; }
+  const base = STRIPE_LINKS[what];
+  if (!base) return;
+  // Passa l'ID utente Supabase a Stripe per il webhook
+  const url = base + '?client_reference_id=' + encodeURIComponent(sbUser.id)
+                   + '&prefilled_email=' + encodeURIComponent(sbUser.email);
+  window.location.href = url;
+}
+
+async function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const payment = params.get('payment');
+  const level = params.get('level');
+  if (payment !== 'success' || !level) return;
+  // Pulisci l'URL senza ricaricare la pagina
+  window.history.replaceState({}, '', window.location.pathname);
+  // Aspetta che Supabase sia pronto e ricarica gli acquisti
+  let attempts = 0;
+  while (!sb && attempts < 20) { await new Promise(r => setTimeout(r, 200)); attempts++; }
+  if (sbUser) {
+    await loadSbPurchases();
+    updateLevelCards();
+    showToast('🎉 Pagamento completato! Il livello è stato sbloccato.');
+  } else {
+    // Utente non loggato: salva localmente come fallback temporaneo
+    const lvs = level === '23' ? [2,3] : [parseInt(level)];
+    const local = JSON.parse(localStorage.getItem('cwes_unlocked') || '[1]');
+    lvs.forEach(l => { if (!local.includes(l)) local.push(l); });
+    localStorage.setItem('cwes_unlocked', JSON.stringify(local));
+    updateLevelCards();
+    showToast('🎉 Pagamento completato! Accedi per sincronizzare i tuoi acquisti.');
+  }
 }
 async function restoreAll() {
   if (!sbUser) { showAuthModal(null, 'login'); return; }
@@ -1390,6 +1420,7 @@ function formatNum(n) {
    ════════════════════════════════════════════ */
 updateLevelCards();
 initSupabase();
+checkPaymentReturn();
 </script>
 </body>
 </html>
