@@ -360,7 +360,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
       <div class="lv-badge g1">🍇</div>
       <div class="lv-info">
         <p class="lv-name">Appassionato</p>
-        <p class="lv-desc">Vitigni famosi, regioni, abbinamenti base</p>
+        <p class="lv-desc">Servizio, viticoltura, enologia, spumanti e distillati</p>
         <p class="lv-desc" style="margin-top:4px;color:var(--gold-dim)">15 domande · 30 sec · Scala fino a €100.000</p>
       </div>
       <span class="lv-tag tag-free">Gratis</span>
@@ -369,7 +369,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
       <div class="lv-badge g2">🥂</div>
       <div class="lv-info">
         <p class="lv-name">Esperto</p>
-        <p class="lv-desc">DOC/DOCG approfondite, tecniche di vinificazione</p>
+        <p class="lv-desc">Enografia italiana e mondiale, DOC/DOCG e legislazione</p>
         <p class="lv-desc" style="margin-top:4px;color:rgba(192,192,192,.35)">15 domande · 25 sec · Scala fino a €500.000</p>
       </div>
       <span class="lv-tag tag-pro">€4,99</span>
@@ -379,7 +379,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
       <div class="lv-badge g3">🏅</div>
       <div class="lv-info">
         <p class="lv-name">Sommelier</p>
-        <p class="lv-desc">Enografia mondiale, annate, Master Sommelier</p>
+        <p class="lv-desc">Abbinamento cibo-vino, analisi sensoriale, gastronomia</p>
         <p class="lv-desc" style="margin-top:4px;color:rgba(232,128,152,.35)">15 domande · 20 sec · Scala fino a €1.000.000</p>
       </div>
       <span class="lv-tag tag-elite">€7,99</span>
@@ -707,9 +707,24 @@ async function doLogout() {
 }
 
 /* ════════════════════════════════════════════
-   QUESTIONS DATABASE
+   QUESTIONS DATABASE  (loaded lazily from JSON)
    ════════════════════════════════════════════ */
-const DB = {
+const DB = {};  // populated on demand by ensureLevel()
+
+async function ensureLevel(lv) {
+  if (DB[lv] && DB[lv].length) return;  // already loaded
+  try {
+    const r = await fetch(`questions/level${lv}.json`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    DB[lv] = data.questions;
+  } catch (e) {
+    console.error('Errore caricamento livello', lv, e);
+    alert('Errore nel caricamento delle domande.\nVerifica la connessione e riprova.');
+  }
+}
+
+/* ── LEGACY QUESTIONS (commented out – now loaded from JSON files) ──
   1: [ // APPASSIONATO
     { id:101, q:"In quale regione italiana si produce il Barolo, detto 'Il Re dei vini italiani'?", opts:["Toscana","Piemonte","Veneto","Sicilia"], a:1, hint:"Il Barolo si produce nelle Langhe, nell'area di Alba (CN). Il vitigno è il Nebbiolo.", cat:"Regioni" },
     { id:102, q:"Quale vitigno è alla base del Brunello di Montalcino DOCG?", opts:["Nebbiolo","Montepulciano","Sangiovese","Aglianico"], a:2, hint:"A Montalcino il Sangiovese viene chiamato 'Brunello'. È uno dei vini più longevi d'Italia.", cat:"Vitigni" },
@@ -836,7 +851,8 @@ const DB = {
     { id:339, q:"Il sistema Solera usato per lo Sherry funziona in questo modo:", opts:["Invecchiamento in un'unica botte per decenni","Prelievo dalla botte più vecchia e reintegro progressivo con vino più giovane","Blend di vini prodotti in una stessa annata","Refrigerazione a cascata delle vasche di fermentazione"], a:1, hint:"La Solera è l'insieme di criaderas (file di botti sovrapposte) dove il vino scorre gradualmente dalle botti giovani in alto verso le botti più vecchie in basso. Si preleva sempre dalla Solera (il livello più vecchio).", cat:"Enografia" },
     { id:340, q:"Nella produzione dello Champagne Metodo Classico, il 'dégorgement' è:", opts:["Il remuage: rotazione graduale delle bottiglie sul pupitre","L'espulsione del deposito di lieviti congelato nel collo della bottiglia","Il tirage: aggiunta di zucchero per la seconda fermentazione","La filtrazione del vino base prima dell'assemblaggio"], a:1, hint:"Il processo completo: tirage (zucchero+lieviti), prise de mousse (2a fermentazione), remuage (raccolta sedimento sul collo), dégorgement (espulsione del sedimento ghiacciato), dosage (aggiunta liqueur).", cat:"Spumanti" },
   ]
-};
+}
+── END LEGACY QUESTIONS ── */
 
 /* ════════════════════════════════════════════
    PRIZE LADDER CONFIG
@@ -987,13 +1003,15 @@ async function restoreAll() {
 /* ════════════════════════════════════════════
    GAME START
    ════════════════════════════════════════════ */
-function startLevel(lv) {
+async function startLevel(lv) {
+  await ensureLevel(lv);
+  if (!DB[lv] || !DB[lv].length) return;  // load failed, alert already shown
   state.level = lv;
   state.qIdx = 0;
   state.safeScore = 0;
   state.lifelines = { f50: true, hint: true, audience: true, change: true };
   state.answered = false;
-  // Fisher-Yates shuffle (corretto) e prendi 15 domande
+  // Fisher-Yates shuffle e prendi 15 domande casuali
   const allQ = [...DB[lv]];
   for (let i = allQ.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
