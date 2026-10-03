@@ -359,7 +359,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
     <div class="lv-card free" onclick="startLevel(1)">
       <div class="lv-badge g1">🍇</div>
       <div class="lv-info">
-        <p class="lv-name">Appassionato</p>
+        <p class="lv-name">1° Livello</p>
         <p class="lv-desc">Servizio, viticoltura, enologia, spumanti e distillati</p>
         <p class="lv-desc" style="margin-top:4px;color:var(--gold-dim)">15 domande · 30 sec · Scala fino a €100.000</p>
       </div>
@@ -368,7 +368,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
     <div class="lv-card" id="lv-card-2" onclick="tryLevel(2)">
       <div class="lv-badge g2">🥂</div>
       <div class="lv-info">
-        <p class="lv-name">Esperto</p>
+        <p class="lv-name">2° Livello</p>
         <p class="lv-desc">Enografia italiana e mondiale, DOC/DOCG e legislazione</p>
         <p class="lv-desc" style="margin-top:4px;color:rgba(192,192,192,.35)">15 domande · 25 sec · Scala fino a €500.000</p>
       </div>
@@ -378,8 +378,8 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
     <div class="lv-card" id="lv-card-3" onclick="tryLevel(3)">
       <div class="lv-badge g3">🏅</div>
       <div class="lv-info">
-        <p class="lv-name">Sommelier</p>
-        <p class="lv-desc">Abbinamento cibo-vino, analisi sensoriale, gastronomia</p>
+        <p class="lv-name">3° Livello</p>
+        <p class="lv-desc">Abbinamento cibo-vino, analisi sensoriale e gastronomia</p>
         <p class="lv-desc" style="margin-top:4px;color:rgba(232,128,152,.35)">15 domande · 20 sec · Scala fino a €1.000.000</p>
       </div>
       <span class="lv-tag tag-elite">€7,99</span>
@@ -388,14 +388,14 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
   </div>
   <div class="levels-footer">
     Acquisto <strong>una tantum</strong> · Nessun abbonamento · Tuo per sempre<br>
-    Bundle Esperto + Sommelier: <strong>€9,99</strong>
+    Bundle 2° + 3° Livello: <strong>€9,99</strong>
   </div>
 </div>
 
 <!-- ═══ GAME ═══ -->
 <div class="screen" id="s-game">
   <div class="game-topbar">
-    <span class="game-lvpill" id="g-lvpill">🍇 Appassionato</span>
+    <span class="game-lvpill" id="g-lvpill">🍇 1° Livello</span>
     <span class="game-score" id="g-score">€ 0</span>
     <div class="timer-wrap">
       <svg viewBox="0 0 38 38" width="38" height="38">
@@ -475,16 +475,16 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
       <div class="pw-card" onclick="purchase(2)">
         <span class="pw-card-icon">🥂</span>
         <div class="pw-card-info">
-          <p class="pw-card-name">Livello Esperto</p>
-          <p class="pw-card-desc">200+ domande · DOC/DOCG avanzate<br>Tecniche di vinificazione · Classifiche</p>
+          <p class="pw-card-name">2° Livello</p>
+          <p class="pw-card-desc">Enografia italiana e mondiale<br>DOC/DOCG, legislazione, 1000 domande</p>
         </div>
         <div class="pw-price"><span class="pw-price-main">€4,99</span><span class="pw-price-sub">una volta</span></div>
       </div>
       <div class="pw-card" onclick="purchase(3)">
         <span class="pw-card-icon">🏅</span>
         <div class="pw-card-info">
-          <p class="pw-card-name">Livello Sommelier</p>
-          <p class="pw-card-desc">300+ domande · Enografia mondiale<br>Annate storiche · Master Sommelier</p>
+          <p class="pw-card-name">3° Livello</p>
+          <p class="pw-card-desc">Abbinamento cibo-vino, gastronomia<br>Analisi sensoriale, 1000 domande</p>
         </div>
         <div class="pw-price"><span class="pw-price-main">€7,99</span><span class="pw-price-sub">una volta</span></div>
       </div>
@@ -492,7 +492,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
         <div class="pw-badge">Miglior valore</div>
         <span class="pw-card-icon">🍷</span>
         <div class="pw-card-info">
-          <p class="pw-card-name">Bundle Esperto + Sommelier</p>
+          <p class="pw-card-name">Bundle 2° + 3° Livello</p>
           <p class="pw-card-desc">Entrambi i livelli · Risparmio €2,99<br>Accesso immediato a tutto il contenuto</p>
         </div>
         <div class="pw-price"><span class="pw-price-main">€9,99</span><span class="pw-price-sub">una volta</span></div>
@@ -870,21 +870,21 @@ const LADDERS = {
     // Milionario ÷ 10 (max €100.000)
     prizes: [10, 20, 30, 50, 100, 200, 400, 800, 1600, 3200, 6400, 12500, 25000, 50000, 100000],
     safe: [4, 9], // Q5 = €100 | Q10 = €3.200
-    label: '🍇 Appassionato', topPrize: '€ 100.000'
+    label: '🍇 1° Livello', topPrize: '€ 100.000'
   },
   2: {
     time: 25,
     // Milionario ÷ 2 (max €500.000)
     prizes: [50, 100, 150, 250, 500, 1000, 2000, 4000, 8000, 16000, 32000, 62500, 125000, 250000, 500000],
     safe: [4, 9], // Q5 = €500 | Q10 = €16.000
-    label: '🥂 Esperto', topPrize: '€ 500.000'
+    label: '🥂 2° Livello', topPrize: '€ 500.000'
   },
   3: {
     time: 20,
     // Scala ESATTA di "Chi Vuol Essere Milionario?" (max €1.000.000)
     prizes: [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000],
     safe: [4, 9], // Q5 = €1.000 | Q10 = €32.000
-    label: '🏅 Sommelier', topPrize: '€ 1.000.000'
+    label: '🏅 3° Livello', topPrize: '€ 1.000.000'
   }
 };
 
@@ -932,7 +932,7 @@ function showPaywall(lv) {
   // Richiede login prima di mostrare il pagamento
   if (lv && !sbUser) { showAuthModal(lv, 'login'); return; }
   document.getElementById('pw-icon').textContent = lv === 2 ? '🥂' : lv === 3 ? '🏅' : '🔓';
-  document.getElementById('pw-title').textContent = lv === 2 ? 'Sblocca il Livello Esperto' : lv === 3 ? 'Sblocca il Livello Sommelier' : 'Scegli il tuo prossimo livello';
+  document.getElementById('pw-title').textContent = lv === 2 ? 'Sblocca il 2° Livello' : lv === 3 ? 'Sblocca il 3° Livello' : 'Scegli il tuo prossimo livello';
   showScreen('s-paywall');
 }
 function updateLevelCards() {
