@@ -278,7 +278,7 @@
       "opts": [
         "zucchero aggiunto in grande quantità",
         "aceto",
-        "amidi e carboidrati (pasta, pane, patate, alcuni crostacei)",
+        "amidi e carboidrati",
         "peperoncino"
       ],
       "a": 2,
@@ -837,7 +837,7 @@
       "q": "La regola \"bianco col pesce, rosso con la carne\":",
       "opts": [
         "è sempre valida senza eccezioni",
-        "è una semplificazione: ad esempio un pesce in umido saporito può stare bene con un rosso leggero",
+        "è una semplificazione:",
         "vale solo per i formaggi",
         "è vietata"
       ],
@@ -1147,7 +1147,7 @@
         "un Moscato",
         "uno spumante dolce",
         "un passito",
-        "un rosso morbido, ad esempio un Merlot veneto"
+        "un rosso morbido"
       ],
       "a": 3,
       "hint": "",
@@ -1215,7 +1215,7 @@
       "q": "Con la frutta secca e i dolci secchi si abbinano bene:",
       "opts": [
         "rossi giovani e tannici",
-        "vini dolci ossidativi (Vin Santo, Marsala, Sherry dolci)",
+        "vini dolci ossidativi",
         "bianchi leggeri",
         "spumanti brut"
       ],
@@ -2617,7 +2617,7 @@
         "a base di cappone arrosto",
         "di pasta ripiena",
         "di dolce natalizio",
-        "scenografico, a base di pesce, verdure e salsa verde"
+        "scenografico, a base di"
       ],
       "a": 3,
       "hint": "",
@@ -3120,7 +3120,7 @@
       "opts": [
         "un Moscato rosa passito",
         "un Recioto",
-        "un rosso leggero come la Schiava o un bianco aromatico secco",
+        "un rosso leggero",
         "uno Sherry dolce"
       ],
       "a": 2,
@@ -3567,7 +3567,7 @@
       "q": "Con la caponata siciliana (agrodolce) si abbina bene:",
       "opts": [
         "un Passito di Pantelleria",
-        "un rosato o un rosso leggero come il Frappato",
+        "un rosato o un rosso leggero",
         "un Nero d'Avola Riserva tannico",
         "un Marsala Vergine"
       ],
@@ -3611,7 +3611,7 @@
         "un Nero d'Avola tannico",
         "un Marsala",
         "un passito",
-        "un bianco siciliano come Grillo o Catarratto"
+        "un bianco siciliano"
       ],
       "a": 3,
       "hint": "",
@@ -5403,7 +5403,7 @@
         "un Barolo",
         "un Porto Vintage giovane e tannico",
         "un bianco secco",
-        "un rosso dolce e aromatico come il Brachetto d'Acqui"
+        "un rosso dolce e aromatico"
       ],
       "a": 3,
       "hint": "",
@@ -6312,7 +6312,7 @@
       "opts": [
         "un Tokaji Aszú",
         "un bianco leggero",
-        "un rosso ungherese come Egri Bikavér o Kékfrankos",
+        "un rosso ungherese",
         "uno spumante dolce"
       ],
       "a": 2,
@@ -8496,7 +8496,7 @@
       "opts": [
         "un bianco molto acido",
         "uno spumante Pas dosé",
-        "un vino morbido, come un rosato fruttato",
+        "un vino morbido",
         "un rosso tannico"
       ],
       "a": 2,
@@ -8552,7 +8552,7 @@
       "opts": [
         "scegliere vini molto alcolici",
         "scegliere un passito",
-        "evitare vini molto alcolici, che accentuano la pungenza",
+        "evitare vini molto alcolici",
         "servire solo distillati"
       ],
       "a": 2,
@@ -8678,7 +8678,7 @@
       "opts": [
         "un bianco secco",
         "un rosso tannico",
-        "un rosso dolce aromatico come Brachetto o Moscato rosa",
+        "un rosso dolce aromatico",
         "uno spumante Pas dosé"
       ],
       "a": 2,
@@ -10525,7 +10525,7 @@
       "q": "Con la torta caprese (cioccolato e mandorle) si abbina bene:",
       "opts": [
         "un bianco secco",
-        "un vino rosso dolce, come un Aleatico passito",
+        "un vino rosso dolce",
         "uno spumante Pas dosé",
         "un rosato secco"
       ],
@@ -10608,7 +10608,7 @@
       "id": 3758,
       "q": "Con i profiteroles al cioccolato si abbina bene:",
       "opts": [
-        "un vino rosso dolce, come un Brachetto o un Porto",
+        "un vino rosso dolce",
         "un bianco secco",
         "uno spumante Pas dosé",
         "un rosato secco"
@@ -12109,7 +12109,7 @@
         "un rosso più tannico",
         "un passito",
         "un rosato più strutturato",
-        "un bianco più delicato, mentre il pomodoro può chiamare un rosato"
+        "un bianco più delicato"
       ],
       "a": 3,
       "hint": "",
@@ -13170,7 +13170,7 @@
       "id": 3941,
       "q": "Con la burrata si abbina bene:",
       "opts": [
-        "un bianco pugliese fresco come Verdeca o Fiano",
+        "un bianco pugliese fresco",
         "un Primitivo di Manduria",
         "un Negroamaro Riserva",
         "un Aleatico dolce"

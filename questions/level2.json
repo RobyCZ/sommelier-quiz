@@ -4351,7 +4351,7 @@
       "q": "La classificazione dei vini di Saint-Émilion:",
       "opts": [
         "risale al 1855 ed è immutabile",
-        "viene rivista periodicamente (circa ogni dieci anni)",
+        "viene rivista periodicamente",
         "non esiste",
         "riguarda solo i vini bianchi"
       ],
@@ -5848,7 +5848,7 @@
       "id": 2418,
       "q": "La Patagonia argentina (Neuquén, Río Negro) è nota per vini:",
       "opts": [
-        "da clima più fresco, come Pinot noir e Malbec eleganti",
+        "da clima più fresco",
         "esclusivamente dolci",
         "da uve tropicali",
         "solo spumanti"
@@ -5918,7 +5918,7 @@
       "id": 2423,
       "q": "La Valle di Casablanca, in Cile, è nota soprattutto per:",
       "opts": [
-        "bianchi da clima fresco (Sauvignon, Chardonnay)",
+        "bianchi da clima fresco",
         "rossi da uve appassite",
         "vini liquorosi",
         "vini da uve tropicali"
@@ -7027,7 +7027,7 @@
         "Barolo, La Morra e Verduno",
         "Alba, Bra e Cherasco",
         "Monforte, Novello e Serralunga",
-        "Barbaresco, Neive, Treiso (e la frazione San Rocco Seno d'Elvio di Alba)"
+        "Barbaresco, Neive, Treiso"
       ],
       "a": 3,
       "hint": "",
@@ -12919,7 +12919,7 @@
       "q": "Secondo la tradizione, il Susumaniello deve il nome (\"somarello\") alla sua:",
       "opts": [
         "forma del grappolo",
-        "elevata produttività, che caricava gli asini",
+        "elevata produttività",
         "resistenza alla siccità",
         "buccia spessa"
       ],

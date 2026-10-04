@@ -808,7 +808,7 @@
       "id": 1058,
       "q": "Chi assaggia per primo il vino al tavolo?",
       "opts": [
-        "Chi lo ha ordinato (l'ospite che invita)",
+        "Chi lo ha ordinato",
         "Il commensale più anziano",
         "La persona seduta alla destra del sommelier",
         "Il cuoco"
@@ -2712,7 +2712,7 @@
       "id": 1194,
       "q": "Il \"corpo\" o \"struttura\" di un vino dipende soprattutto da:",
       "opts": [
-        "l'estratto secco (sostanze non volatili disciolte)",
+        "l'estratto secco",
         "la temperatura di servizio",
         "la forma del bicchiere",
         "il colore della bottiglia"
@@ -2908,7 +2908,7 @@
       "id": 1208,
       "q": "Una temperatura di fermentazione oltre i 35 °C è pericolosa perché:",
       "opts": [
-        "i lieviti possono bloccarsi (arresto di fermentazione)",
+        "i lieviti possono bloccarsi",
         "il vino diventa troppo acido",
         "aumenta il colore in modo eccessivo",
         "si forma troppo zucchero"
@@ -3051,7 +3051,7 @@
         "la capacità della botte",
         "la durata del legno",
         "il colore del vetro",
-        "gli aromi ceduti al vino (vaniglia, tostato, caffè)"
+        "gli aromi ceduti al vino"
       ],
       "a": 3,
       "hint": "",
@@ -3807,7 +3807,7 @@
         "non va mai lavato",
         "con olio per farlo brillare",
         "solo con acqua calda e sapone profumato",
-        "senza residui di detersivo o grasso, che rovinano la schiuma"
+        "senza residui di detersivo o grasso"
       ],
       "a": 3,
       "hint": "",
@@ -5611,7 +5611,7 @@
       "q": "La grappa si ottiene distillando vinacce:",
       "opts": [
         "fresche e mai fermentate, obbligatoriamente",
-        "fermentate, semifermentate o vergini (poi fermentate)",
+        "fermentate, semifermentate o vergini",
         "essiccate al sole",
         "mescolate con cereali"
       ],
@@ -5654,7 +5654,7 @@
       "opts": [
         "vitigni a bacca rossa tannici",
         "uve passite",
-        "vitigni aromatici come Moscato o Traminer",
+        "vitigni aromatici",
         "uve colpite da muffa nobile"
       ],
       "a": 2,
@@ -6618,7 +6618,7 @@
       "id": 1473,
       "q": "I bicchieri per distillati invecchiati sono tipicamente:",
       "opts": [
-        "a tulipano piccolo, che concentra i profumi",
+        "a tulipano piccolo",
         "coppe larghe da spumante",
         "boccali da birra",
         "bicchieri da acqua"
@@ -6787,7 +6787,7 @@
       "q": "Il lievito delle birre a bassa fermentazione è:",
       "opts": [
         "Saccharomyces bayanus",
-        "Saccharomyces pastorianus (carlsbergensis)",
+        "Saccharomyces pastorianus",
         "Brettanomyces bruxellensis",
         "Botrytis cinerea"
       ],
@@ -7503,7 +7503,7 @@
         "un vignaiolo indipendente",
         "una cooperativa di produttori",
         "un rivenditore",
-        "un négociant-manipulant (maison che può acquistare uve)"
+        "un négociant-manipulant"
       ],
       "a": 3,
       "hint": "",
@@ -10919,7 +10919,7 @@
         "Rosé Doux",
         "Réserve Domaine",
         "Rouge Demi-sec",
-        "Récemment Dégorgé (sboccato di recente dopo lungo affinamento)"
+        "Récemment Dégorgé"
       ],
       "a": 3,
       "hint": "",
