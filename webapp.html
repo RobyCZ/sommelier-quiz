@@ -417,8 +417,8 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
       <span class="ll-label">50 : 50</span>
     </div>
     <div class="ll-btn" id="ll-hint" onclick="useHint()">
-      <div class="ll-circle">📞</div>
-      <span class="ll-label">Produttore</span>
+      <div class="ll-circle">🍷</div>
+      <span class="ll-label">Esperto</span>
     </div>
     <div class="ll-btn" id="ll-audience" onclick="useAudience()">
       <div class="ll-circle">👥</div>
@@ -529,10 +529,10 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
 <!-- ═══ MODALS ═══ -->
 <div class="modal-overlay" id="modal-hint">
   <div class="modal">
-    <div class="modal-icon">📞</div>
-    <p class="modal-title">Il Produttore risponde…</p>
+    <div class="modal-icon">🍷</div>
+    <p class="modal-title">L'Esperto consiglia…</p>
     <p class="modal-body" id="modal-hint-text">…</p>
-    <button class="modal-btn" onclick="closeModal('modal-hint')">Ho capito, grazie!</button>
+    <button class="modal-btn" onclick="closeModal('modal-hint')">Grazie, ho capito!</button>
   </div>
 </div>
 
@@ -1276,7 +1276,11 @@ function useHint() {
   state.lifelines.hint = false;
   document.getElementById('ll-hint').classList.add('used');
   const q = state.questions[state.qIdx];
-  document.getElementById('modal-hint-text').textContent = `"${q.hint}"`;
+  const letters = ['A', 'B', 'C', 'D'];
+  const letter  = letters[q.a];
+  const answer  = q.opts[q.a];
+  document.getElementById('modal-hint-text').textContent =
+    `"Mmh… non ho dubbi, direi la ${letter}: ${answer}"`;
   document.getElementById('modal-hint').classList.add('open');
 }
 
