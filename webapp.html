@@ -313,6 +313,12 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
 /* ─── UTILS ─── */
 .mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
 
+/* ─── WIN / GAMEOVER extras ─── */
+.win-upsell{display:none;flex-direction:column;align-items:center;gap:10px;margin-top:4px;padding:16px 20px;background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);border-radius:14px;width:100%;max-width:300px}
+.win-upsell-text{font-family:var(--fb);font-style:italic;font-size:13px;color:rgba(255,255,255,.75);text-align:center;line-height:1.5}
+.btn-share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:260px;padding:11px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:999px;font-family:var(--fd);font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,.7);cursor:pointer;text-transform:uppercase;transition:all .2s;margin-top:4px}
+.btn-share:hover{background:rgba(255,255,255,.1);color:#fff}
+
 /* ─── AUTH MODAL ─── */
 .auth-tabs{display:flex;border-bottom:1px solid rgba(212,175,55,.2);margin-bottom:18px}
 .auth-tab{flex:1;padding:10px;text-align:center;font-family:var(--fd);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
@@ -439,12 +445,17 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
 <div class="screen" id="s-win">
   <div class="win-icon">🏆</div>
   <p class="win-eyebrow">Hai vinto!</p>
-  <h2 class="win-title">Complimenti,<br>Sei un Sommelier!</h2>
+  <h2 class="win-title" id="win-title">Complimenti,<br>Sei un Sommelier!</h2>
   <p class="win-prize" id="win-prize">€ 100.000</p>
   <p class="win-sub" id="win-sub">Hai risposto correttamente a tutte le domande</p>
+  <div class="win-upsell" id="win-upsell">
+    <p class="win-upsell-text" id="win-upsell-text"></p>
+    <button class="btn-gold" style="max-width:260px" id="win-upsell-btn" onclick="showScreen('s-paywall')">Sblocca il prossimo livello</button>
+  </div>
   <div class="divider-gold"></div>
-  <button class="btn-gold" style="max-width:260px" onclick="showScreen('s-levels')">Gioca ancora</button>
-  <button class="btn-outline mt12" style="max-width:260px" onclick="showScreen('s-splash')">Menu principale</button>
+  <button class="btn-share" onclick="shareResult('win')">📤 &nbsp;Condividi il risultato</button>
+  <button class="btn-gold mt12" style="max-width:260px" onclick="showScreen('s-levels')">Gioca ancora</button>
+  <button class="btn-outline mt8" style="max-width:260px" onclick="showScreen('s-splash')">Menu principale</button>
 </div>
 
 <!-- ═══ GAME OVER ═══ -->
@@ -455,8 +466,9 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
   <p class="go-correct-ans" id="go-correct-ans">…</p>
   <p class="go-safe" id="go-safe">Porti a casa: <strong>€ 0</strong></p>
   <div class="divider-gold"></div>
-  <button class="btn-wine" onclick="restartSameLevel()">Rigioca stesso livello</button>
-  <button class="btn-outline" style="max-width:260px" onclick="showScreen('s-levels')">Scegli livello</button>
+  <button class="btn-share" onclick="shareResult('over')">📤 &nbsp;Sfida i tuoi amici</button>
+  <button class="btn-wine mt8" onclick="restartSameLevel()">Rigioca stesso livello</button>
+  <button class="btn-outline mt8" style="max-width:260px" onclick="showScreen('s-levels')">Scegli livello</button>
 </div>
 
 <!-- ═══ PAYWALL ═══ -->
@@ -1230,6 +1242,31 @@ function gameWin() {
   const cfg = LADDERS[state.level];
   document.getElementById('win-prize').textContent = '€ ' + formatNum(cfg.prizes[14]);
   document.getElementById('win-sub').textContent = `Hai completato il livello ${cfg.label} con tutte le risposte corrette!`;
+
+  // Titolo dinamico per livello
+  const titles = {
+    1: 'Complimenti,<br>sei un vero Appassionato!',
+    2: 'Eccellente,<br>sei un Intenditore!',
+    3: 'Sei un Sommelier!<br>Livello massimo! 🏅'
+  };
+  document.getElementById('win-title').innerHTML = titles[state.level] || 'Hai vinto!';
+
+  // Upsell livello successivo
+  const upsell = document.getElementById('win-upsell');
+  const upsellText = document.getElementById('win-upsell-text');
+  const upsellBtn = document.getElementById('win-upsell-btn');
+  if (state.level === 1) {
+    upsellText.textContent = 'Ottimo risultato! Pronto per la vera sfida? Il 2° Livello ti aspetta con 1000 domande su enografia italiana e mondiale.';
+    upsellBtn.textContent = '🥂 Sblocca il 2° Livello — €4,99';
+    upsell.style.display = 'flex';
+  } else if (state.level === 2) {
+    upsellText.textContent = 'Sei quasi arrivato in cima. Il 3° Livello — abbinamenti, analisi sensoriale e gastronomia — è la sfida finale.';
+    upsellBtn.textContent = '🏅 Sblocca il 3° Livello — €7,99';
+    upsell.style.display = 'flex';
+  } else {
+    upsell.style.display = 'none';
+  }
+
   showScreen('s-win');
 }
 
@@ -1246,6 +1283,31 @@ function gameOver(q, idx) {
 }
 
 function restartSameLevel() { startLevel(state.level); }
+
+function shareResult(type) {
+  const appUrl = window.location.href.split('?')[0];
+  const levelNames = { 1: 'Appassionato 🍇', 2: 'Intenditore 🥂', 3: 'Sommelier 🏅' };
+  const lvName = levelNames[state.level] || 'Sommelier';
+  let text;
+  if (type === 'win') {
+    text = `Ho completato il livello ${lvName} di "Chi Vuol Essere Sommelier?" con tutte le risposte corrette! 🍷\nSai fare altrettanto? Metti alla prova la tua cultura enologica 👇`;
+  } else {
+    const safe = state.safeScore || 0;
+    text = safe > 0
+      ? `Ho vinto €${formatNum(safe)} al quiz "Chi Vuol Essere Sommelier?" 🍷\nRiesci a fare meglio di me? Provaci 👇`
+      : `Ho sfidato "Chi Vuol Essere Sommelier?" 🍷 Il vino non mente — e nemmeno il quiz!\nProva anche tu 👇`;
+  }
+  if (navigator.share) {
+    navigator.share({ title: 'Chi Vuol Essere Sommelier?', text: text, url: appUrl })
+      .catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text + '\n' + appUrl).then(() => {
+      showToast('✓ Testo copiato! Incollalo sui tuoi social.');
+    }).catch(() => {
+      showToast('Copia questo link: ' + appUrl);
+    });
+  }
+}
 
 /* ════════════════════════════════════════════
    LIFELINES
