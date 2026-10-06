@@ -571,6 +571,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
   <div class="modal" style="position:relative;padding-top:18px">
     <span class="auth-close-x" onclick="closeAuthModal()">✕</span>
     <div class="modal-icon">🔐</div>
+    <p class="auth-context-msg" id="auth-context-msg" style="display:none;font-family:var(--fu);font-size:11px;color:rgba(255,255,255,.55);text-align:center;line-height:1.5;margin-bottom:12px;padding:8px 12px;background:rgba(212,175,55,.07);border-radius:8px;border:1px solid rgba(212,175,55,.15)">Crea un account gratuito per completare l'acquisto e ritrovare i tuoi livelli su qualsiasi dispositivo.</p>
     <div class="auth-tabs">
       <div class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')">Accedi</div>
       <div class="auth-tab" id="auth-tab-signup" onclick="switchAuthTab('signup')">Registrati</div>
@@ -656,6 +657,13 @@ function showAuthModal(pendingLevel = null, mode = 'login') {
   authPendingLevel = pendingLevel;
   document.getElementById('auth-error').textContent = '';
   switchAuthTab(mode);
+  // Mostra messaggio contestuale solo se arriva da un tentativo di acquisto
+  const msg = document.getElementById('auth-context-msg');
+  if (pendingLevel) {
+    msg.style.display = 'block';
+  } else {
+    msg.style.display = 'none';
+  }
   document.getElementById('modal-auth').classList.add('open');
 }
 
