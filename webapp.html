@@ -581,6 +581,7 @@ html,body{height:100%;background:#05060C;overflow:hidden;font-family:var(--fu)}
       <input class="auth-input" id="login-email" type="email" placeholder="Email" autocomplete="email">
       <input class="auth-input" id="login-pwd" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
       <button class="modal-btn" id="btn-do-login" onclick="doLogin()">Accedi</button>
+      <p class="auth-skip" style="margin-top:10px;font-size:10px" onclick="doForgotPassword()">Password dimenticata?</p>
     </div>
     <!-- Signup -->
     <div id="auth-form-signup" style="display:none">
@@ -716,6 +717,25 @@ async function doLogout() {
   await sb.auth.signOut();
   sbPurchases = []; updateLevelCards(); updateAuthUI();
   showToast('Disconnesso');
+}
+
+async function doForgotPassword() {
+  if (!sb) { showToast('Servizio non disponibile'); return; }
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) {
+    document.getElementById('auth-error').textContent = 'Inserisci prima la tua email sopra.';
+    document.getElementById('login-email').focus();
+    return;
+  }
+  const { error } = await sb.auth.resetPasswordForEmail(email);
+  const el = document.getElementById('auth-error');
+  if (error) {
+    el.style.color = 'var(--red)';
+    el.textContent = error.message;
+  } else {
+    el.style.color = 'var(--gold)';
+    el.textContent = '✓ Email inviata! Controlla la tua casella di posta.';
+  }
 }
 
 /* ════════════════════════════════════════════
